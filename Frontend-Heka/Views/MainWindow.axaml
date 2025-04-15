@@ -238,7 +238,6 @@
 						<!-- Main background -->
 						<Rectangle Fill="#5D3FD3" Stretch="Fill"/>
 
-						<!-- Memory grid with improved layout to match Figma design -->
 						<Grid>
 							<Grid.RowDefinitions>
 								<RowDefinition Height="Auto"/>
@@ -268,7 +267,7 @@
 					</Grid>
 				</Border>
 
-				<!-- Value Converter - Updated to match Figma design -->
+			
 				<Border Grid.Row="2" Background="#000000" BorderBrush="#333333" BorderThickness="1" CornerRadius="15" Padding="15">
 					<Grid RowDefinitions="Auto,Auto,Auto,Auto">
 						<TextBlock Grid.Row="0" Text="Value Converter" Foreground="White" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,5"/>
