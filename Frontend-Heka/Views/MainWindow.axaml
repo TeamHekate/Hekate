@@ -1,0 +1,305 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
+        x:Class="Frontend_Heka.Views.MainWindow"
+        Title="HEKATE"
+        Background="#1E1433"
+        WindowStartupLocation="CenterScreen"
+        MinWidth="900" MinHeight="600">
+
+	<Grid RowDefinitions="Auto,*">
+		<Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="20,15,20,15">
+			<!-- Buttons -->
+			<StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="5">
+				<Button Name="RunButton" Content="RUN" Background="#2D2152" Foreground="White"
+                        Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"/>
+				<Button Name="StepButton" Content="STEP" Background="#2D2152" Foreground="White"
+                        Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"/>
+				<Button Name="OpenButton" Content="OPEN" Background="#2D2152" Foreground="White"
+                        Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"/>
+				<Button Name="SaveButton" Content="SAVE" Background="#2D2152" Foreground="White"
+                        Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"/>
+				<Button Name="ExportButton" Content="EXPORT" Background="#2D2152" Foreground="White"
+                        Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"/>
+				<Button Name="ImportButton" Content="IMPORT" Background="#2D2152" Foreground="White"
+                        Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"/>
+			</StackPanel>
+
+			<StackPanel Grid.Column="2" Orientation="Horizontal">
+				<TextBlock Text="HE" Foreground="#FFFFFF" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
+				<Border CornerRadius="50" Background="#FF69B4" Width="24" Height="24" Margin="2,0">
+					<TextBlock Text="K" Foreground="#FFFFFF" FontSize="16" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</Border>
+				<TextBlock Text="ATE" Foreground="#FFFFFF" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
+			</StackPanel>
+		</Grid>
+
+		<!-- Main Content -->
+		<Grid Grid.Row="1" ColumnDefinitions="*,Auto,*" Margin="20,0,20,20">
+			<!-- Left Panel -->
+			<Grid Grid.Column="0" RowDefinitions="*,Auto,Auto,Auto,Auto">
+
+				<Border Grid.Row="0" BorderBrush="#333333" BorderThickness="1" Background="#111111" Margin="0,0,0,15">
+					<TextBox Name="CodeEditor"
+                             AcceptsReturn="True"
+                             Background="Transparent"
+                             Foreground="#CCCCCC"
+                             FontFamily="Consolas"
+                             FontSize="14"
+                             Text="MOV CX, 10&#x0A;LOOP_START:&#x0A;DEC CX&#x0A;JNZ LOOP_START&#x0A;HLT"
+                             BorderThickness="0"
+                             Padding="15"/>
+				</Border>
+
+				<Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,*,Auto,*" Margin="0,0,0,15">
+					<TextBlock Grid.Column="0" Text="PC" Foreground="White" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="12" FontWeight="SemiBold"/>
+					<Border Grid.Column="1" Background="#9370DB" Opacity="0.7" CornerRadius="3" Padding="5" Height="30">
+						<TextBlock Name="PCValue" Text="0000" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+					</Border>
+
+					<TextBlock Grid.Column="2" Text="IR" Foreground="White" VerticalAlignment="Center" Margin="15,0,5,0" FontSize="12" FontWeight="SemiBold"/>
+					<Border Grid.Column="3" Background="#9370DB" Opacity="0.7" CornerRadius="3" Padding="5" Height="30">
+						<TextBlock Name="IRValue" Text="0000" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+					</Border>
+
+					<TextBlock Grid.Column="4" Text="SP" Foreground="#00FFFF" VerticalAlignment="Center" Margin="15,0,5,0" FontSize="12" FontWeight="SemiBold"/>
+					<Border Grid.Column="5" Background="#9370DB" Opacity="0.7" CornerRadius="3" Padding="5" Height="30">
+						<TextBlock Name="SPValue" Text="0000" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+					</Border>
+				</Grid>
+
+
+				<Grid Grid.Row="2" Margin="0,0,0,15">
+					<Grid ColumnDefinitions="Auto,*">
+						<Border Grid.Column="0" Background="#9370DB" Opacity="0.7" Width="30" Height="30">
+							<TextBlock Text="FR" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold"/>
+						</Border>
+
+						<Grid Grid.Column="1">
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="Auto"/>
+							</Grid.RowDefinitions>
+
+					
+							<Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*,*,*,*">
+								<TextBlock Grid.Column="0" Text="SF" Foreground="White" HorizontalAlignment="Center" FontSize="11" FontWeight="SemiBold"/>
+								<TextBlock Grid.Column="1" Text="CF" Foreground="White" HorizontalAlignment="Center" FontSize="11" FontWeight="SemiBold"/>
+								<TextBlock Grid.Column="2" Text="AF" Foreground="White" HorizontalAlignment="Center" FontSize="11" FontWeight="SemiBold"/>
+								<TextBlock Grid.Column="3" Text="PF" Foreground="White" HorizontalAlignment="Center" FontSize="11" FontWeight="SemiBold"/>
+								<TextBlock Grid.Column="4" Text="ZF" Foreground="White" HorizontalAlignment="Center" FontSize="11" FontWeight="SemiBold"/>
+								<TextBlock Grid.Column="5" Text="OF" Foreground="White" HorizontalAlignment="Center" FontSize="11" FontWeight="SemiBold"/>
+								<TextBlock Grid.Column="6" Text="F1" Foreground="White" HorizontalAlignment="Center" FontSize="11" FontWeight="SemiBold"/>
+								<TextBlock Grid.Column="7" Text="F0" Foreground="White" HorizontalAlignment="Center" FontSize="11" FontWeight="SemiBold"/>
+							</Grid>
+
+	
+							<Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*,*,*,*">
+								<Border Grid.Column="0" Background="#9370DB" Opacity="0.7" Height="30" Margin="1,0,1,0">
+									<TextBlock Name="Flag0" Text="0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="1" Background="#9370DB" Opacity="0.7" Height="30" Margin="1,0,1,0">
+									<TextBlock Name="Flag1" Text="0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="2" Background="#9370DB" Opacity="0.7" Height="30" Margin="1,0,1,0">
+									<TextBlock Name="Flag2" Text="0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="3" Background="#9370DB" Opacity="0.7" Height="30" Margin="1,0,1,0">
+									<TextBlock Name="Flag3" Text="0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="4" Background="#9370DB" Opacity="0.7" Height="30" Margin="1,0,1,0">
+									<TextBlock Name="Flag4" Text="0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="5" Background="#9370DB" Opacity="0.7" Height="30" Margin="1,0,1,0">
+									<TextBlock Name="Flag5" Text="0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="6" Background="#9370DB" Opacity="0.7" Height="30" Margin="1,0,1,0">
+									<TextBlock Name="Flag6" Text="0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="7" Background="#9370DB" Opacity="0.7" Height="30" Margin="1,0,1,0">
+									<TextBlock Name="Flag7" Text="0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+							</Grid>
+						</Grid>
+					</Grid>
+				</Grid>
+
+				<Grid Grid.Row="3" RowDefinitions="Auto,Auto" Margin="0,0,0,15">
+				
+					<TextBlock Grid.Row="0" Text="Registers" Foreground="White" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,5"/>
+
+					<Grid Grid.Row="1" RowDefinitions="Auto,Auto">
+				
+						<Grid Grid.Row="0" ColumnDefinitions="Auto,*">
+							<TextBlock Grid.Column="0" Text="R0-R7" Foreground="White" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="12" FontWeight="SemiBold"/>
+							<Grid Grid.Column="1" ColumnDefinitions="*,*,*,*,*,*,*,*">
+								<Border Grid.Column="0" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R0Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="1" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R1Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="2" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R2Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="3" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R3Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="4" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R4Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="5" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R5Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="6" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R6Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="7" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R7Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+							</Grid>
+						</Grid>
+
+				
+						<Grid Grid.Row="1" ColumnDefinitions="Auto,*" Margin="0,5,0,0">
+							<TextBlock Grid.Column="0" Text="R8-RF" Foreground="White" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="12" FontWeight="SemiBold"/>
+							<Grid Grid.Column="1" ColumnDefinitions="*,*,*,*,*,*,*,*">
+								<Border Grid.Column="0" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R8Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="1" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R9Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="2" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R10Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="3" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R11Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="4" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R12Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="5" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R13Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="6" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R14Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+								<Border Grid.Column="7" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
+									<TextBlock Name="R15Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+								</Border>
+							</Grid>
+						</Grid>
+					</Grid>
+				</Grid>
+
+			
+				<Grid Grid.Row="4">
+					<StackPanel HorizontalAlignment="Right">
+						<TextBlock Text="System Clock Frequency" Foreground="White" HorizontalAlignment="Right" Margin="0,0,0,5"
+                                   FontSize="12" FontWeight="SemiBold"/>
+						
+						<Border Background="#9370DB" Opacity="0.7" CornerRadius="20" Height="35" Width="150">
+							<Grid>
+								<TextBlock Text="0000" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           FontSize="14" Margin="0,0,15,0"/>
+								<Path Data="M 0,0 L 6,6 L 12,0" Stroke="White" StrokeThickness="2"
+                                      HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0"/>
+							</Grid>
+						</Border>
+					</StackPanel>
+				</Grid>
+			</Grid>
+
+			<Grid Grid.Column="1" Width="20"/>
+			<Grid Grid.Column="2" RowDefinitions="Auto,*,Auto">
+			
+				<StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
+					<Border Background="#8B008B" Padding="15,8" CornerRadius="3" Margin="0,0,5,0">
+						<TextBlock Text="ROM" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
+					</Border>
+					<Border Background="#8B008B" Padding="15,8" CornerRadius="3" Margin="0,0,5,0">
+						<TextBlock Text="RAM" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
+					</Border>
+					<Border Background="Transparent" Padding="15,8" Margin="0,0,5,0">
+						<TextBlock Text="INSTRUCTIONS" Foreground="#9370DB" FontSize="11" FontWeight="SemiBold"/>
+					</Border>
+					<Border Background="Transparent" Padding="15,8">
+						<TextBlock Text="I/O MAP" Foreground="#9370DB" FontSize="11" FontWeight="SemiBold"/>
+					</Border>
+				</StackPanel>
+
+		
+				<Border Grid.Row="1" BorderBrush="#9932CC" BorderThickness="2" CornerRadius="20" Margin="0,0,0,15">
+					<Grid>
+						<!-- Main background -->
+						<Rectangle Fill="#5D3FD3" Stretch="Fill"/>
+
+						<!-- Memory grid with improved layout to match Figma design -->
+						<Grid>
+							<Grid.RowDefinitions>
+								<RowDefinition Height="Auto"/>
+								<RowDefinition Height="*"/>
+							</Grid.RowDefinitions>
+
+
+							<!-- Memory grid -->
+							<ItemsControl Grid.Row="1" Name="MemoryGrid">
+								<ItemsControl.ItemsPanel>
+									<ItemsPanelTemplate>
+										<UniformGrid Rows="16" Columns="16" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+									</ItemsPanelTemplate>
+								</ItemsControl.ItemsPanel>
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<Border BorderBrush="White" BorderThickness="0.5" Background="Transparent">
+											<TextBlock Text="" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="8"/>
+										</Border>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+
+							<!-- Small handle on the right side -->
+							<Ellipse Fill="#9932CC" Width="6" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,-3,0"/>
+						</Grid>
+					</Grid>
+				</Border>
+
+				<!-- Value Converter - Updated to match Figma design -->
+				<Border Grid.Row="2" Background="#000000" BorderBrush="#333333" BorderThickness="1" CornerRadius="15" Padding="15">
+					<Grid RowDefinitions="Auto,Auto,Auto,Auto">
+						<TextBlock Grid.Row="0" Text="Value Converter" Foreground="White" FontSize="14" FontWeight="SemiBold" Margin="0,0,0,5"/>
+						<TextBlock Grid.Row="1" Text="Selected Memory: RAM 0x0000" Foreground="White" FontSize="12" Margin="0,0,0,15" Name="SelectedMemoryText"/>
+
+						<Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto,*,Auto,*" Margin="0,0,0,15">
+							<TextBlock Grid.Column="0" Text="DEC" Foreground="White" VerticalAlignment="Center" Margin="0,0,10,0" FontSize="12" FontWeight="SemiBold"/>
+							<Border Grid.Column="1" Background="#9370DB" Opacity="0.7" CornerRadius="5" Padding="5" Height="30">
+								<TextBlock Name="DecValue" Text="000" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+							</Border>
+
+							<TextBlock Grid.Column="2" Text="Oct" Foreground="White" VerticalAlignment="Center" Margin="15,0,10,0" FontSize="12" FontWeight="SemiBold"/>
+							<Border Grid.Column="3" Background="#9370DB" Opacity="0.7" CornerRadius="5" Padding="5" Height="30">
+								<TextBlock Name="OctValue" Text="000" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+							</Border>
+
+							<TextBlock Grid.Column="4" Text="SP" Foreground="#00FFFF" VerticalAlignment="Center" Margin="15,0,10,0" FontSize="12" FontWeight="SemiBold"/>
+							<Border Grid.Column="5" Background="#9370DB" Opacity="0.7" CornerRadius="5" Padding="5" Height="30">
+								<TextBlock Name="SPValueConverter" Text="000" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+							</Border>
+						</Grid>
+
+						<Grid Grid.Row="3" ColumnDefinitions="Auto,*" HorizontalAlignment="Center">
+							<TextBlock Grid.Column="0" Text="Bin" Foreground="White" VerticalAlignment="Center" Margin="0,0,15,0" FontSize="12" FontWeight="SemiBold"/>
+							<Border Grid.Column="1" Background="#9370DB" Opacity="0.7" CornerRadius="5" Padding="10,5" Width="120" Height="30">
+								<TextBlock Name="BinValue" Text="0000 0000" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+							</Border>
+						</Grid>
+					</Grid>
+				</Border>
+			</Grid>
+		</Grid>
+	</Grid>
+</Window>
