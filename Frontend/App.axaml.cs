@@ -1,9 +1,9 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-using Frontend_Heka.Views;
+using Frontend.Views;
 
-namespace Frontend_Heka
+namespace Frontend
 {
     public class App : Application
     {

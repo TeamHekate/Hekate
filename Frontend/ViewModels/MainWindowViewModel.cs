@@ -4,7 +4,7 @@ using Avalonia.Markup.Xaml;
 using System;
 using System.Collections.Generic;
 
-namespace HexKate
+namespace Frontend.ViewModels
 {
     public partial class MainWindow : Window
     {

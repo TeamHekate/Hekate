@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace Frontend_Heka
+namespace Frontend
 {
     class Program
     {

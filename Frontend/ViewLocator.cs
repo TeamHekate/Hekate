@@ -1,9 +1,9 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Frontend_Heka.ViewModels;
+using Frontend.ViewModels;
 
-namespace Frontend_Heka;
+namespace Frontend;
 
 public class ViewLocator : IDataTemplate
 {

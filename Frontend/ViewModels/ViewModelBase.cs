@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 
-namespace Frontend_Heka.ViewModels;
+namespace Frontend.ViewModels;
 
 public class ViewModelBase : ObservableObject
 {

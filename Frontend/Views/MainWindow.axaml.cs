@@ -3,7 +3,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using System;
 
-namespace Frontend_Heka.Views
+namespace Frontend.Views
 {
     public partial class MainWindow : Window
     {

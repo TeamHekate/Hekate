@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
-        x:Class="Frontend_Heka.Views.MainWindow"
+        x:Class="Frontend.Views.MainWindow"
         Title="HEKATE"
         Background="#1E1433"
         WindowStartupLocation="CenterScreen"
