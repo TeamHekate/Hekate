@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Frontend.Models;
 using Simulator;
 
@@ -29,6 +30,11 @@ namespace Frontend.ViewModels
                     new Span<byte>(_ram, (row<<4), 16)
                         .ToArray().Select(e => e.ToString("X2")).ToArray()
                     ));
+        }
+
+        [RelayCommand] private void ClickStep()
+        {
+            Console.WriteLine("STEP CLICKED!");
         }
     }
 }
