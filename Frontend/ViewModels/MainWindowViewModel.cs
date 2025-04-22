@@ -3,40 +3,32 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using CommunityToolkit.Mvvm.ComponentModel;
+using Frontend.Models;
+using Simulator;
 
 namespace Frontend.ViewModels
 {
-    public partial class MainWindow : Window
+    public partial class MainWindowViewModel : ViewModelBase
     {
-        public MainWindow()
-        {
-            InitializeComponent();
-#if DEBUG
-            this.AttachDevTools();
-#endif
-            InitializeMemoryGrid();
-        }
+        public ObservableCollection<MemoryGridRowModel> RamPageZero { get; set; } = [];
 
-        private void InitializeComponent()
-        {
-            AvaloniaXamlLoader.Load(this);
-        }
+        private byte[] _ram = new byte[512];
 
-        private void InitializeMemoryGrid()
+        [ObservableProperty] private string _greet = "Hello";
+
+        public MainWindowViewModel()
         {
-            // Find the ItemsControl for the memory grid
-            var memoryGrid = this.FindControl<ItemsControl>("MemoryGrid");
-            if (memoryGrid != null)
-            {
-                // Create 1024 items (32x32 grid)
-                var items = new List<int>();
-                for (int i = 0; i < 1024; i++)
-                {
-                    items.Add(i);
-                }
-                // Use ItemsSource instead of Items
-                memoryGrid.ItemsSource = items;
-            }
+            Random.Shared.NextBytes(_ram);
+            RamPageZero.Clear();
+            for (byte row = 0; row < 16; row++)
+                RamPageZero.Add(new MemoryGridRowModel(
+                    (row<<4).ToString("X4"),
+                    new Span<byte>(_ram, (row<<4), 16)
+                        .ToArray().Select(e => e.ToString("X2")).ToArray()
+                    ));
         }
     }
 }

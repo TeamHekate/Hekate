@@ -1,14 +1,20 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Frontend.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="1100" d:DesignHeight="800"
         x:Class="Frontend.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
         Title="HEKATE"
         Background="#1E1433"
         WindowStartupLocation="CenterScreen"
         MinWidth="900" MinHeight="600">
-
+	
+	<Design.DataContext>
+		<vm:MainWindowViewModel />
+	</Design.DataContext>
+	
 	<Grid RowDefinitions="Auto,*">
 		<Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="20,15,20,15">
 			<!-- Buttons -->
@@ -236,17 +242,11 @@
 				<Border Grid.Row="1" BorderBrush="#9932CC" BorderThickness="2" CornerRadius="20" Margin="0,0,0,15">
 					<Grid>
 						<!-- Main background -->
-						<Rectangle Fill="#5D3FD3" Stretch="Fill"/>
+						<!--Rectangle Fill="#5D3FD3" Stretch="Fill"/-->
 
-						<Grid>
-							<Grid.RowDefinitions>
-								<RowDefinition Height="Auto"/>
-								<RowDefinition Height="*"/>
-							</Grid.RowDefinitions>
-
-
+						<Grid RowDefinitions="Auto,*">
 							<!-- Memory grid -->
-							<ItemsControl Grid.Row="1" Name="MemoryGrid">
+							<!--ItemsControl Grid.Row="1" Name="MemoryGrid">
 								<ItemsControl.ItemsPanel>
 									<ItemsPanelTemplate>
 										<UniformGrid Rows="16" Columns="16" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
@@ -259,10 +259,68 @@
 										</Border>
 									</DataTemplate>
 								</ItemsControl.ItemTemplate>
-							</ItemsControl>
-
+							</ItemsControl-->
 							<!-- Small handle on the right side -->
-							<Ellipse Fill="#9932CC" Width="6" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,-3,0"/>
+							<!-- Ellipse Fill="#9932CC" Width="6" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,-3,0"/-->
+							<ItemsControl Grid.Row="1" ItemsSource="{Binding RamPageZero}" VerticalAlignment="Center" Padding="15">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<Grid ColumnDefinitions="Auto, *" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+											<TextBlock Text="{Binding HighNibble}" FontFamily="Consolas" VerticalAlignment="Stretch" Padding="5"/>
+											<UniformGrid Grid.Column="1" Columns="16" VerticalAlignment="Stretch">
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[0]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[1]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[2]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[3]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[4]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[5]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[6]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[7]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[8]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[9]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[10]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[11]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[12]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[13]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[14]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+												<Border BorderBrush="Pink" BorderThickness="1">
+													<TextBlock Text="{Binding Locations[15]}" FontFamily="Consolas" TextAlignment="Center" Padding="5"/>
+												</Border>
+											</UniformGrid>
+										</Grid>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
 						</Grid>
 					</Grid>
 				</Border>

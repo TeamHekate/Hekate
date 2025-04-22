@@ -10,13 +10,12 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Converter\" />
-		<Folder Include="Models\" />
 		<AvaloniaResource Include="Assets\**" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="11.2.6" />
+		<PackageReference Include="Avalonia.Controls.DataGrid" Version="11.2.6" />
 		<PackageReference Include="Avalonia.Desktop" Version="11.2.6" />
 		<PackageReference Include="Avalonia.Themes.Fluent" Version="11.2.6" />
 		<PackageReference Include="Avalonia.Fonts.Inter" Version="11.2.6" />
@@ -25,5 +24,9 @@
 			<PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
 		</PackageReference>
 		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Simulator\Simulator.csproj" />
 	</ItemGroup>
 </Project>
