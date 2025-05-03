@@ -1,7 +1,7 @@
 namespace Simulator.Instructions;
 
-public abstract class Instruction
+public interface IInstruction
 {
-    public abstract ExecutionResult Execute(HekateInstance cpu, byte[] args);
+    public static abstract ExecutionResult Execute(HekateInstance cpu, byte[] args);
 }
 

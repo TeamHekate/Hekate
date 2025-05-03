@@ -56,7 +56,7 @@
                              Foreground="#CCCCCC"
                              FontFamily="Consolas"
                              FontSize="14"
-                             Text="MOV CX, 10&#x0A;LOOP_START:&#x0A;DEC CX&#x0A;JNZ LOOP_START&#x0A;HLT"
+                             Text=".ORG  0x80&#x0A;      MOV R2, 0x80&#x0A;LOOP: ADD R1, R2&#x0A;      JNZ LOOP&#x0A;      HLT"
                              BorderThickness="0"
                              Padding="15"/>
 				</Border>
@@ -64,7 +64,7 @@
 				<Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,*,Auto,*" Margin="0,0,0,15">
 					<TextBlock Grid.Column="0" Text="PC" Foreground="White" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="12" FontWeight="SemiBold"/>
 					<Border Grid.Column="1" Background="#9370DB" Opacity="0.7" CornerRadius="3" Padding="5" Height="30">
-						<TextBlock Name="PCValue" Text="0000" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+						<TextBlock Name="PCValue" Text="{Binding ProgramCounter}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 					</Border>
 
 					<TextBlock Grid.Column="2" Text="IR" Foreground="White" VerticalAlignment="Center" Margin="15,0,5,0" FontSize="12" FontWeight="SemiBold"/>
@@ -144,28 +144,28 @@
 							<TextBlock Grid.Column="0" Text="R0-R7" Foreground="White" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="12" FontWeight="SemiBold"/>
 							<Grid Grid.Column="1" ColumnDefinitions="*,*,*,*,*,*,*,*">
 								<Border Grid.Column="0" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R0Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="R0Value" Text="{Binding Registers[0]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="1" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R1Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="R1Value" Text="{Binding Registers[1]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="2" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R2Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="R2Value" Text="{Binding Registers[2]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="3" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R3Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="R3Value" Text="{Binding Registers[3]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="4" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R4Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="R4Value" Text="{Binding Registers[4]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="5" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R5Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="R5Value" Text="{Binding Registers[5]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="6" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R6Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="R6Value" Text="{Binding Registers[6]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="7" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R7Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="R7Value" Text="{Binding Registers[7]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 							</Grid>
 						</Grid>
@@ -175,28 +175,28 @@
 							<TextBlock Grid.Column="0" Text="R8-RF" Foreground="White" VerticalAlignment="Center" Margin="0,0,5,0" FontSize="12" FontWeight="SemiBold"/>
 							<Grid Grid.Column="1" ColumnDefinitions="*,*,*,*,*,*,*,*">
 								<Border Grid.Column="0" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R8Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="R8Value" Text="{Binding Registers[8]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="1" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R9Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="R9Value" Text="{Binding Registers[9]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="2" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R10Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="RaValue" Text="{Binding Registers[10]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="3" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R11Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="RbValue" Text="{Binding Registers[11]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="4" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R12Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="RcValue" Text="{Binding Registers[12]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="5" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R13Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="RdValue" Text="{Binding Registers[13]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="6" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R14Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="ReValue" Text="{Binding Registers[14]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 								<Border Grid.Column="7" Background="#9370DB" Opacity="0.7" Height="30" Margin="2">
-									<TextBlock Name="R15Value" Text="00" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
+									<TextBlock Name="RfValue" Text="{Binding Registers[15]}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12"/>
 								</Border>
 							</Grid>
 						</Grid>
@@ -263,7 +263,7 @@
 							</ItemsControl-->
 							<!-- Small handle on the right side -->
 							<!-- Ellipse Fill="#9932CC" Width="6" Height="20" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,-3,0"/-->
-							<ItemsControl Grid.Row="1" ItemsSource="{Binding RamPageZero}" VerticalAlignment="Center" Padding="15">
+							<ItemsControl Grid.Row="1" ItemsSource="{Binding RomPageZero}" VerticalAlignment="Center" Padding="15">
 								<ItemsControl.ItemTemplate>
 									<DataTemplate>
 										<Grid ColumnDefinitions="Auto, *" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
