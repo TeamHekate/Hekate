@@ -38,6 +38,48 @@ public class HekateInstance
         };
     }
 
+    public void Run() //Run method
+    {
+        while (true)
+        {
+            var pc = Registers.ProgramCounter;
+            var opcode = (Opcode)_rom[pc];
+
+      
+            Console.WriteLine($"[PC={pc:X4}] Executing: {opcode}");
+
+            var result = Step();
+
+            Console.WriteLine(result.ToString()); //Burda konsola değilde ekrana basmalı
+
+            if (opcode == Opcode.Halt)
+            {
+                Console.WriteLine("HALT encountered. Stopping execution.");
+                break;
+            }
+        }
+
+        Console.WriteLine("Program execution completed.");
+    }
+
+    public void SaveRom(string path)  //Save
+    {
+        File.WriteAllBytes(path, _rom);
+        Console.WriteLine($"ROM saved to: {path}");
+    }
+
+    public void LoadRom(string path) //Open
+    {
+        var bytes = File.ReadAllBytes(path);
+
+        if (bytes.Length != _rom.Length)
+            throw new InvalidOperationException($"ROM size mismatch. Expected {_rom.Length}, got {bytes.Length}");
+
+        Array.Copy(bytes, _rom, bytes.Length);
+        Registers.ProgramCounter = 0; // Optional: reset PC
+        Console.WriteLine($"ROM loaded from: {path}");
+    }
+
     public void ClearRom()
     {
         _rom = new byte[MemorySize];
