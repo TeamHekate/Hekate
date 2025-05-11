@@ -6,8 +6,8 @@ public abstract class AddCarry : IInstruction
     {
         var dstIx = (byte)((args[0] >> 4) & 0x0f);
         var srcIx = (byte)(args[0] & 0x0f);
-        var dstVal = cpu.Registers.Registers[dstIx];
-        var srcVal = cpu.Registers.Registers[srcIx];
+        var dstVal = cpu.Registers[dstIx];
+        var srcVal = cpu.Registers[srcIx];
 
         var acc = (ushort)(srcVal + dstVal + (cpu.Registers.CarryFlag ? 1 : 0));
 
@@ -20,7 +20,7 @@ public abstract class AddCarry : IInstruction
         cpu.Registers.ZeroFlag = (acc & 0xff) == 0;
         cpu.Registers.CarryFlag = (acc & 0x100) != 0;
 
-        cpu.Registers.Registers[dstIx] = (byte)(acc & 0xff);
+        cpu.Registers[dstIx] = (byte)(acc & 0xff);
         cpu.Registers.ProgramCounter += 2;
 
         return new ExecutionResult(

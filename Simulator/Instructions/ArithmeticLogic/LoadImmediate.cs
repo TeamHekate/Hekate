@@ -10,7 +10,7 @@ public abstract class LoadImmediate : IInstruction
         cpu.Registers.ZeroFlag = imm == 0;
         cpu.Registers.SignFlag = (imm & 0x80) != 0;
 
-        cpu.Registers.Registers[dstIx] = imm;
+        cpu.Registers[dstIx] = imm;
         cpu.Registers.ProgramCounter += 3;
 
         return new ExecutionResult(dstIx, true, false, false, 0, 0);

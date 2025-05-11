@@ -12,6 +12,7 @@ public class HekateInstance
 
     private byte[] _ram = new byte[MemorySize];
     private byte[] _rom = new byte[MemorySize];
+    public ushort StartAddress = 0;
 
     public Span<byte> GetRamPage(byte page) => new Span<byte>(_ram, page * 256, 256);
     public Span<byte> GetRomPage(byte page) => new Span<byte>(_rom, page * 256, 256);
@@ -92,7 +93,16 @@ public class HekateInstance
 
     public void ClearRegisters()
     {
-        Registers = new RegisterFile();
+        Registers = new RegisterFile
+        {
+            ProgramCounter = StartAddress
+        };
+    }
+
+    public void ClearRegisters(ushort startAddress)
+    {
+        StartAddress = startAddress;
+        ClearRegisters();
     }
     
     public void LoadProgramAt(byte[] program, byte offset)
