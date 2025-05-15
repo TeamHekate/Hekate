@@ -2,7 +2,7 @@ namespace Simulator.Instructions.FlowControl;
 
 public abstract class Halt : IInstruction
 {
-    public static ExecutionResult Execute(HekateInstance cpu, byte[] args)
+    public static ExecutionResult Execute(HekateInstance cpu)
     {
         cpu.Registers.HaltFlag = true;
         cpu.Registers.ProgramCounter++;

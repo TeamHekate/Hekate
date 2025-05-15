@@ -14,8 +14,6 @@ public class RegisterFile
     public ushort StackPointer = 0;
     public byte InstructionRegister = 0;
     
-    
-    
     public byte this[int index]
     {
         get => _registers[index];

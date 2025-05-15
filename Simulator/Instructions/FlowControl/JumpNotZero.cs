@@ -2,9 +2,13 @@ namespace Simulator.Instructions.FlowControl;
 
 public abstract class JumpNotZero : IInstruction
 {
-    public static ExecutionResult Execute(HekateInstance cpu, byte[] args)
+    public static ExecutionResult Execute(HekateInstance cpu)
     {
-        var jmp = (ushort)(args[0] | (args[1] << 8));
+        
+        var arg0 =  cpu.ReadRomAtPc(1);
+        var arg1 = cpu.ReadRomAtPc(2);
+        
+        var jmp = (ushort)(arg0 | (arg1 << 8));
         var npc = (ushort)(cpu.Registers.ProgramCounter + 3);
         cpu.Registers.ProgramCounter = (cpu.Registers.ZeroFlag) ? npc : jmp;
         return new ExecutionResult(

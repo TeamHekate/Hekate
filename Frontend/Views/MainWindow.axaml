@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:models="using:Frontend.Models"
+        xmlns:cc="using:Frontend.Controls"
         mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="800"
         x:Class="Frontend.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
@@ -37,6 +38,25 @@
                 </ItemsControl>
             </Grid>
         </DataTemplate>
+        <DataTemplate DataType="{x:Type models:PeripheralDeviceModel}">
+            <Border BorderBrush="{StaticResource DarkPurple}" BorderThickness="1" CornerRadius="5"
+                    HorizontalAlignment="Stretch">
+                <StackPanel Orientation="Horizontal" Spacing="5">
+                    <TextBlock Text="{Binding PortName}" VerticalAlignment="Center" />
+                    <Border>
+                        <StackPanel Orientation="Horizontal" Spacing="5">
+                            <TextBlock Text="{Binding PortName}" VerticalAlignment="Center" />
+                            <CheckBox IsChecked="{Binding IsActive}" />
+                            <TextBlock Text="Address" VerticalAlignment="Center" />
+                            <cc:HexTextBox Text="{Binding StartAddress}" />
+                            <TextBlock Text="Length" VerticalAlignment="Center" />
+                            <cc:HexTextBox Text="{Binding Length}" />
+                            <TextBlock Text="{Binding DeviceName}" />
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </DataTemplate>
     </Window.DataTemplates>
 
     <Design.DataContext>
@@ -53,10 +73,13 @@
                         IsEnabled="{Binding !IsRunning}" />
                 <Button Name="StepButton" Content="STEP" Background="{StaticResource DarkPurple}" Foreground="White"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
-                        Command="{Binding ClickStepCommand}" >
+                        Command="{Binding ClickStepCommand}">
                     <Button.IsEnabled>
                         <MultiBinding Converter="{x:Static BoolConverters.And}">
-                            <Binding Path="!IsRunning" />
+                            <MultiBinding Converter="{x:Static BoolConverters.Or}">
+                                <Binding Path="!IsRunning" />
+                                <Binding Path="IsPaused" />
+                            </MultiBinding>
                             <Binding Path="!IsHalted" />
                         </MultiBinding>
                     </Button.IsEnabled>
@@ -127,7 +150,7 @@
                              Foreground="{StaticResource Gray}"
                              FontFamily="{StaticResource DraftingFont}"
                              FontSize="14"
-                             Text=".ORG  0x80&#x0A;      MOV R2, 0x10&#x0A;LOOP: ADD R1, R2&#x0A;      JNZ LOOP&#x0A;      HLT"
+                             Text="{Binding CurrentProgram}"
                              BorderThickness="0"
                              Padding="15" />
                 </Border>
@@ -197,27 +220,32 @@
                             <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*,*,*,*">
                                 <Border Grid.Column="0" Background="{StaticResource LightPurple}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag0" Text="{Binding Flags[0]}" Foreground="White" HorizontalAlignment="Center"
+                                    <TextBlock Name="Flag0" Text="{Binding Flags[0]}" Foreground="White"
+                                               HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
                                 <Border Grid.Column="1" Background="{StaticResource LightPurple}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag1" Text="{Binding Flags[1]}" Foreground="White" HorizontalAlignment="Center"
+                                    <TextBlock Name="Flag1" Text="{Binding Flags[1]}" Foreground="White"
+                                               HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
                                 <Border Grid.Column="2" Background="{StaticResource LightPurple}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag2" Text="{Binding Flags[2]}" Foreground="White" HorizontalAlignment="Center"
+                                    <TextBlock Name="Flag2" Text="{Binding Flags[2]}" Foreground="White"
+                                               HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
                                 <Border Grid.Column="3" Background="{StaticResource LightPurple}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag3" Text="{Binding Flags[3]}" Foreground="White" HorizontalAlignment="Center"
+                                    <TextBlock Name="Flag3" Text="{Binding Flags[3]}" Foreground="White"
+                                               HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
                                 <Border Grid.Column="4" Background="{StaticResource LightPurple}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag4" Text="{Binding Flags[4]}" Foreground="White" HorizontalAlignment="Center"
+                                    <TextBlock Name="Flag4" Text="{Binding Flags[4]}" Foreground="White"
+                                               HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
                                 <Border Grid.Column="5" Background="{StaticResource LightPurple}" Opacity="0.7"
@@ -397,7 +425,27 @@
                             <TextBlock> To Be Implemented. </TextBlock>
                         </TabItem>
                         <TabItem Header="I/O Mapper">
-                            <TextBlock> To Be Implemented. </TextBlock>
+                            <Grid RowDefinitions="Auto, *" ColumnDefinitions="*,*" HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch">
+                                <Button Grid.Row="0" Grid.Column="0" Content="Refresh"
+                                        Command="{Binding RefreshDevicesCommand}"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                        HorizontalContentAlignment="Center"
+                                        Margin="5" IsEnabled="{Binding !IsRunning}" />
+                                <Button Grid.Row="0" Grid.Column="1" Content="Apply Changes"
+                                        Command="{Binding ApplyDeviceConfigCommand}"
+                                        HorizontalAlignment="Stretch" VerticalAlignment="Center"
+                                        HorizontalContentAlignment="Center"
+                                        Margin="5" IsEnabled="{Binding !IsRunning}" />
+                                <ItemsControl Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1"
+                                              ItemsSource="{Binding DeviceManager.Devices}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Vertical" Spacing="10" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </Grid>
                         </TabItem>
                     </TabControl>
                 </Border>

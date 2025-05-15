@@ -1,6 +1,8 @@
 ﻿using Simulator.Instructions;
 using Simulator.Instructions.ArithmeticLogic;
 using Simulator.Instructions.FlowControl;
+using Simulator.Instructions.Memory;
+using Simulator.Peripheral;
 
 namespace Simulator;
 
@@ -12,7 +14,9 @@ public class HekateInstance
 
     private byte[] _ram = new byte[MemorySize];
     private byte[] _rom = new byte[MemorySize];
-    public ushort StartAddress = 0;
+    private ushort _startAddress = 0;
+
+    public MemoryMapper Mapper { get; } = new();
 
     public Span<byte> GetRamPage(byte page) => new Span<byte>(_ram, page * 256, 256);
     public Span<byte> GetRomPage(byte page) => new Span<byte>(_rom, page * 256, 256);
@@ -24,52 +28,67 @@ public class HekateInstance
         Console.WriteLine(((Opcode)ir).ToString());
         return (Opcode)ir switch
         {
-            Opcode.Noop => NoOperation.Execute(this, []),
-            
-            Opcode.Halt => Halt.Execute(this, []),
-            Opcode.Add => Add.Execute(this, [_rom[pc + 1]]),
-            Opcode.AddC => AddCarry.Execute(this, [_rom[pc + 1]]),
-            
-            Opcode.LoadImm => LoadImmediate.Execute(this, [_rom[pc + 1], _rom[pc + 2]]),
-            
-            Opcode.JumpZero => JumpZero.Execute(this, [_rom[pc + 1], _rom[pc + 2]]),
-            Opcode.JumpNotZero => JumpNotZero.Execute(this, [_rom[pc + 1], _rom[pc + 2]]),
-            
+            Opcode.Noop => NoOperation.Execute(this),
+
+            Opcode.Halt => Halt.Execute(this),
+            Opcode.Add => Add.Execute(this),
+            Opcode.AddC => AddCarry.Execute(this),
+
+            Opcode.LoadImm => LoadImmediate.Execute(this),
+            Opcode.LoadRom => LoadRom.Execute(this),
+            Opcode.LoadRam => LoadRam.Execute(this),
+            Opcode.StoreRam => StoreRam.Execute(this),
+
+            Opcode.Jump => Jump.Execute(this),
+            Opcode.JumpZero => JumpZero.Execute(this),
+            Opcode.JumpNotZero => JumpNotZero.Execute(this),
+
             _ => throw new NotImplementedException("Unknown Opcode: " + ir.ToString("X2"))
         };
     }
 
-    public void Run() //Run method
+    public byte ReadRamLocation(ushort address, ref bool wasMapped)
     {
-        while (true)
-        {
-            var pc = Registers.ProgramCounter;
-            var opcode = (Opcode)_rom[pc];
-
-      
-            Console.WriteLine($"[PC={pc:X4}] Executing: {opcode}");
-
-            var result = Step();
-
-            Console.WriteLine(result.ToString()); //Burda konsola değilde ekrana basmalı
-
-            if (opcode == Opcode.Halt)
-            {
-                Console.WriteLine("HALT encountered. Stopping execution.");
-                break;
-            }
-        }
-
-        Console.WriteLine("Program execution completed.");
+        var mapping = Mapper.GetAddressMapping(address);
+        wasMapped = mapping != null;
+        if (mapping is null) return _ram[address];
+        var offset = (ushort)(address - mapping.StartAddress);
+        var rx = mapping.Device.Read(offset);
+        if (rx == null) Mapper.RemoveDevice(mapping.Device);
+        _ram[address] = rx ?? 0xff;
+        return _ram[address];
     }
 
-    public void SaveRom(string path)  //Save
+    public void WriteRamLocation(ushort address, byte value, ref bool wasMapped)
+    {
+        var mapping = Mapper.GetAddressMapping(address);
+        wasMapped = mapping != null;
+        if (mapping is null)
+        {
+            _ram[address] = value;
+            return;
+        }
+        var offset = (ushort)(address - mapping.StartAddress);
+        if (!mapping.Device.Write(value, offset)) Mapper.RemoveDevice(mapping.Device);
+    }
+
+    public byte ReadRomLocation(int address)
+    {
+        return _rom[address & 0xffff];
+    }
+
+    public byte ReadRomAtPc(ushort offset = 0)
+    {
+        return _rom[(Registers.ProgramCounter + offset) & 0xffff];
+    }
+
+    public void SaveRomImage(string path) //Save
     {
         File.WriteAllBytes(path, _rom);
         Console.WriteLine($"ROM saved to: {path}");
     }
 
-    public void LoadRom(string path) //Open
+    public void LoadRomImage(string path) //Open
     {
         var bytes = File.ReadAllBytes(path);
 
@@ -77,7 +96,7 @@ public class HekateInstance
             throw new InvalidOperationException($"ROM size mismatch. Expected {_rom.Length}, got {bytes.Length}");
 
         Array.Copy(bytes, _rom, bytes.Length);
-        Registers.ProgramCounter = 0; // Optional: reset PC
+        Registers.ProgramCounter = _startAddress;
         Console.WriteLine($"ROM loaded from: {path}");
     }
 
@@ -85,7 +104,7 @@ public class HekateInstance
     {
         _rom = new byte[MemorySize];
     }
-    
+
     public void ClearRam()
     {
         _ram = new byte[MemorySize];
@@ -95,16 +114,16 @@ public class HekateInstance
     {
         Registers = new RegisterFile
         {
-            ProgramCounter = StartAddress
+            ProgramCounter = _startAddress
         };
     }
 
     public void ClearRegisters(ushort startAddress)
     {
-        StartAddress = startAddress;
+        _startAddress = startAddress;
         ClearRegisters();
     }
-    
+
     public void LoadProgramAt(byte[] program, byte offset)
     {
         program.CopyTo(_rom, offset);

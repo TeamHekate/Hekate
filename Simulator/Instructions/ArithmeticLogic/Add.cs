@@ -2,10 +2,12 @@ namespace Simulator.Instructions.ArithmeticLogic;
 
 public abstract class Add : IInstruction
 {
-    public static ExecutionResult Execute(HekateInstance cpu, byte[] args)
+    public static ExecutionResult Execute(HekateInstance cpu)
     {
-        var dstIx = (byte)((args[0] >> 4) & 0x0f);
-        var srcIx = (byte)(args[0] & 0x0f);
+        var arg0 = cpu.ReadRomAtPc(1);
+        
+        var dstIx = (byte)((arg0 >> 4) & 0x0f);
+        var srcIx = (byte)(arg0 & 0x0f);
         var dstVal = cpu.Registers[dstIx];
         var srcVal = cpu.Registers[srcIx];
 
