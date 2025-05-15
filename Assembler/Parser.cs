@@ -64,12 +64,13 @@ public static class Parser
     private static Queue<LabeledArg> _unresolvedLabeledArgs = [];
     private static Dictionary<string, ushort> _labels = [];
     private static ushort _currentAddress = 0;
+    private static int _line = 0;
 
     private static Token Consume(params TokenType[] accepts)
     {
         var tok = _tokens.Dequeue();
         if (accepts.Length == 0 || accepts.Contains(tok.Type)) return tok;
-        throw new Exception("Unexpected token of type " + tok.Type);
+        throw new Exception($"[Line {_line}] Unexpected token of type " + tok.Type);
     }
 
     private static Token Peek()
@@ -153,7 +154,7 @@ public static class Parser
                     {
                         "NOP" => 0x00,
                         "HLT" => 0xFF,
-                        _ => throw new Exception("Unknown opcode: " + oTok.Value)
+                        _ => throw new Exception($"[Line {_line}] Unknown opcode: " + oTok.Value)
                     }
                     );
             }
@@ -168,7 +169,7 @@ public static class Parser
                 {
                     "ADD" => new InstructionNode(0x10, dstReg, srcReg),
                     "ADC" => new InstructionNode(0x11, dstReg, srcReg),
-                    _ => throw new  Exception("Unknown opcode: " + oTok.Value),
+                    _ => throw new  Exception($"[Line {_line}] Unknown opcode: " + oTok.Value),
                 };
             }
             case "LDI":
@@ -199,7 +200,7 @@ public static class Parser
                 }
 
                 if (Peek().Type != TokenType.REGISTER)
-                    throw new Exception("Was expecting a register or address after MOV, got "
+                    throw new Exception($"[Line {_line}] Was expecting a register or address after MOV, got "
                                         + Peek().Type);
 
                 var dstIx = ParseRegisterArg();
@@ -218,7 +219,7 @@ public static class Parser
                 }
 
                 throw new Exception(
-                    "Was expecting a register or address after MOV, got "
+                    $"[Line {_line}] Was expecting a register or address after MOV, got "
                     + Peek().Type);
             }
             case "JMP":
@@ -235,7 +236,7 @@ public static class Parser
             }
             default:
             {
-                throw new Exception("Unknown opcode: " + oTok.Value);
+                throw new Exception($"[Line {_line}] Unknown opcode: " + oTok.Value);
             }
         }
     }
@@ -257,10 +258,10 @@ public static class Parser
                 ParseLabel();
             if(Peek().Type == TokenType.OPCODE)
                 q.Enqueue(ParseInstruction());
-            if (Peek().Type == TokenType.COMMENT)
-                Consume(TokenType.COMMENT);
         }
         
+        if (Peek().Type == TokenType.COMMENT)
+            Consume(TokenType.COMMENT);
         Consume(TokenType.NEWLINE);
         return q;
     }
@@ -282,6 +283,7 @@ public static class Parser
         _unresolvedLabeledArgs = [];
         _labels = [];
         _currentAddress = startingAddress;
+        _line = 1;
 
         Queue<ParseNode> q = [];
 
@@ -289,6 +291,7 @@ public static class Parser
         {
             var ln = ParseLine();
             while (ln.Count > 0) q.Enqueue(ln.Dequeue());
+            _line++;
         }
         
         ResolveLabels();

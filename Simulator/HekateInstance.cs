@@ -14,7 +14,7 @@ public class HekateInstance
 
     private byte[] _ram = new byte[MemorySize];
     private byte[] _rom = new byte[MemorySize];
-    private ushort _startAddress = 0;
+    private ushort _startAddress;
 
     public MemoryMapper Mapper { get; } = new();
 
@@ -38,16 +38,17 @@ public class HekateInstance
             Opcode.LoadRom => LoadRom.Execute(this),
             Opcode.LoadRam => LoadRam.Execute(this),
             Opcode.StoreRam => StoreRam.Execute(this),
+            Opcode.MoveReg => MoveRegister.Execute(this),
 
             Opcode.Jump => Jump.Execute(this),
             Opcode.JumpZero => JumpZero.Execute(this),
             Opcode.JumpNotZero => JumpNotZero.Execute(this),
 
-            _ => throw new NotImplementedException("Unknown Opcode: " + ir.ToString("X2"))
+            _ => throw new NotImplementedException("[SIMULATOR] Unknown Opcode: " + ir.ToString("X2"))
         };
     }
 
-    public byte ReadRamLocation(ushort address, ref bool wasMapped)
+    public byte ReadRamLocation(ushort address, out bool wasMapped)
     {
         var mapping = Mapper.GetAddressMapping(address);
         wasMapped = mapping != null;

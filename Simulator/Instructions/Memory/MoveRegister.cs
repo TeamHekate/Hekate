@@ -11,6 +11,7 @@ public class MoveRegister : IInstruction
         cpu.Registers[dstIx] = val;
         cpu.Registers.ZeroFlag = val == 0;
         cpu.Registers.SignFlag = (val & 0x80) != 0;
+        cpu.Registers.ProgramCounter += 2;
         return new ExecutionResult(
             dstIx, true, false, false, 0, 0
         );

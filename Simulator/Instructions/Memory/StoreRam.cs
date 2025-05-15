@@ -19,6 +19,6 @@ public class StoreRam : IInstruction
         cpu.Registers.ProgramCounter += 4;
         
         return new ExecutionResult(
-            0, false, false, true, page, offs);
+            0, false, false, true, (byte)(address >> 8), (byte)(address & 0xff));
     }
 }

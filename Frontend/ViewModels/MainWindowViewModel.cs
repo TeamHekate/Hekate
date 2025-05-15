@@ -4,10 +4,13 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+using Assembler;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Frontend.Models;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
 using Simulator;
 using Simulator.Peripheral;
 
@@ -34,19 +37,7 @@ namespace Frontend.ViewModels
             _cpu.Registers.HaltFlag ? "1" : "0"
         ];
 
-        public string CurrentProgram { get; set; } =
-            """
-            .ORG 0x80
-            
-                LDI  R1, 0x00        ; Initialize R1 to 0
-                LDI  R2, 0x01        ; Initialize R2 to 1
-                
-            L1: MOV  [0x2000+R0], R1 ; .L: Store R1 at 0x2000:00
-                ADD  R1, R2          ; R1 = R1 + R2
-                JMP  .L1             ; Jump to L1
-                
-                HLT                  ; Halt - won't execute.
-            """;
+        public string CurrentProgram { get; set; } = "";
 
         private ExecutionResult? LastExecutionResult { get; set; }
         private readonly HekateInstance _cpu = new HekateInstance();
@@ -106,7 +97,7 @@ namespace Frontend.ViewModels
             var page = _cpu.GetRomPage((byte)(RomAddress >> 8)).ToArray();
             for (byte row = 0; row < 16; row++)
                 RomPage.Add(new MemoryGridRowModel(
-                    (row << 4).ToString("X4"),
+                    ((RomAddress & 0xff00) | (row << 4)).ToString("X4"),
                     new Span<byte>(page, (row << 4), 16)
                         .ToArray().Select(e => e.ToString("X2")).ToArray()
                 ));
@@ -115,21 +106,9 @@ namespace Frontend.ViewModels
 
         public MainWindowViewModel()
         {
-            // _cpu.LoadProgramAt(
-            //     [0x20, 0x20, 0x10, 0x10, 0x12, 0x43, 0x83, 0x00, 0xFF], 0x80);
-            // _cpu.LoadProgramAt(
-            //         [0x23, 0x10, 0x00, 0x20, 0x42, 0x80, 0x00, 0x43, 0x80, 0x00], 0x80
-            //     );
-            _cpu.LoadProgramAt(
-            [
-                0x20, 0x10, 0x00, // 80: LDI  R1, 0x00        ; Initialize R1 to 0
-                0x20, 0x20, 0x01, // 83: LDI  R2, 0x01        ; Initialize R2 to 1
-                0x22, 0x10, 0x00, 0x20, // 86: MOV  [0x2000], R1    ; .L: Store R1 at 0x2000
-                0x10, 0x12, // 8A: ADD  R1, R2          ; R1 = R1 + R2
-                0x40, 0x86, 0x00, // 8C: JMP  0x0086          ; Jump to .L
-                0xFF // 8F: HLT                  ; Halt ???
-            ], 0x80);
-            _cpu.ClearRegisters(0x80);
+
+            
+            
             UpdateRegisters();
             UpdateRamPage();
             UpdateRomPage();
@@ -148,13 +127,26 @@ namespace Frontend.ViewModels
                 {
                     RamAddress = addr;
                     UpdateRamPage();
-                    Console.WriteLine("Jumping to RAM {0}...", addr);
+                }
+                else
+                {
+                    RamAddress = addr;
+                    var newData = _cpu.ReadRamLocation(addr, out var _).ToString("X2");
+                    var oldLoc = new string[16];
+                    RamPage[LastExecutionResult.RamOffset >> 4].Locations.CopyTo(oldLoc, 0);
+                    oldLoc[LastExecutionResult.RamOffset & 0xf] = newData;
+                    RamPage[LastExecutionResult.RamOffset >> 4] =
+                        new MemoryGridRowModel((RamAddress & 0xfff0).ToString("X4"), oldLoc);
+                    OnPropertyChanged(nameof(RamPage));
                 }
             }
             if ((_cpu.Registers.ProgramCounter & 0xff00) != (RomAddress & 0xff00))
             {
-                RomAddress = _cpu.Registers.ProgramCounter;
-                UpdateRomPage();
+                if ((RomAddress & 0xff00) != (_cpu.Registers.ProgramCounter & 0xff00))
+                {
+                    RomAddress = _cpu.Registers.ProgramCounter;
+                    UpdateRomPage();
+                }
             }
             if (LastExecutionResult.RegisterIndex != 0) UpdateRegisters();
             if (LastExecutionResult.Flags) OnPropertyChanged(nameof(Flags));
@@ -189,7 +181,7 @@ namespace Frontend.ViewModels
                     }
 
                     Dispatcher.UIThread.Invoke(StepSimulation);
-                    Thread.Sleep(TimeSpan.FromMicroseconds(500));
+                    Thread.Sleep(TimeSpan.FromMilliseconds(1));
                 }
 
                 IsRunning = false;
@@ -236,10 +228,29 @@ namespace Frontend.ViewModels
         }
 
         [RelayCommand]
+        private void ClickCompile()
+        {
+            Console.WriteLine("Compiling...");
+            try
+            {
+                var image = HekateAssembler.Assemble(CurrentProgram);
+                Console.WriteLine("Compiled successfully.");
+                _cpu.LoadProgramAt(image, 0x0000);
+                UpdateRomPage();
+            }
+            catch (Exception e)
+            {
+                MessageBoxManager.GetMessageBoxStandard("Error", e.Message).ShowAsync();
+            }
+        }
+
+        [RelayCommand]
         private void ClickReset()
         {
             _cpu.ClearRegisters();
+            _cpu.ClearRam();
             UpdateRegisters();
+            UpdateRamPage();
             OnPropertyChanged(nameof(ProgramCounter));
             OnPropertyChanged(nameof(IsHalted));
         }

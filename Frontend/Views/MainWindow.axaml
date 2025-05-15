@@ -67,6 +67,10 @@
         <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="20,15,20,15">
             <!-- Buttons -->
             <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="5">
+                <Button Content="COMPILE" Background="{StaticResource DarkPurple}"
+                        Foreground="White"
+                        Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
+                        Command="{Binding ClickCompileCommand} "/>
                 <Button Name="ResetButton" Content="RESET" Background="{StaticResource DarkPurple}" Foreground="White"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
                         Command="{Binding ClickResetCommand}"
@@ -123,6 +127,7 @@
                 <Button Name="ImportButton" Content="IMPORT" Background="{StaticResource DarkPurple}"
                         Foreground="White"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold" />
+                
             </StackPanel>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal">
@@ -144,15 +149,16 @@
 
                 <Border Grid.Row="0" BorderBrush="{StaticResource Black}" BorderThickness="1"
                         Background="{StaticResource DarkBlack}" Margin="0,0,0,15">
-                    <TextBox Name="CodeEditor"
-                             AcceptsReturn="True"
-                             Background="Transparent"
-                             Foreground="{StaticResource Gray}"
-                             FontFamily="{StaticResource DraftingFont}"
-                             FontSize="14"
-                             Text="{Binding CurrentProgram}"
-                             BorderThickness="0"
-                             Padding="15" />
+                    <cc:CodeEditorBox Name="CodeEditor"
+                                      AcceptsTab="True"
+                                      AcceptsReturn="True"
+                                      Background="Transparent"
+                                      Foreground="{StaticResource Gray}"
+                                      FontFamily="{StaticResource DraftingFont}"
+                                      FontSize="16"
+                                      Text="{Binding CurrentProgram}"
+                                      BorderThickness="0"
+                                      Padding="15" />
                 </Border>
 
                 <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,*,Auto,*" Margin="0,0,0,15">

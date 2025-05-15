@@ -76,7 +76,8 @@ public static class Generator
             {
                 var dstIx = ((RegisterArg)node.Arguments[0]).RegIx;
                 var imm = ConvertImmediateToByte(((ImmediateArg)node.Arguments[1]).Value);
-                _image[index++] = (byte)((dstIx << 4) | imm);
+                _image[index++] = (byte)((dstIx << 4)); 
+                _image[index++] = imm;
                 break;
             }
             case InstructionMode.RegMem:
