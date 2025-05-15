@@ -10,7 +10,8 @@ public class LoadRom : IInstruction
 
         var dstIx = (byte)(reg >> 4);
         var adrIx = (byte)(reg & 0xf);
-        var address = (ushort)((offs | (page << 8)) + cpu.Registers[adrIx]);
+        var regOffset = Utilities.SignExtend(cpu.Registers[adrIx]);
+        var address = (ushort)((offs | (page << 8)) + regOffset);
         var val = cpu.ReadRomLocation(address);
         
         cpu.Registers[dstIx] = val;

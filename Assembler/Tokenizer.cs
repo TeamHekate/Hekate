@@ -4,16 +4,21 @@ namespace Assembler;
 
 public static class Tokenizer
 {
-    public static readonly Dictionary<TokenType, string> TokenPatterns = new()
+    private static readonly Dictionary<TokenType, string> TokenPatterns = new()
     {
-        { TokenType.OPCODE, @"^(NOP|HALT|ADD|SUB|ADDC|SUBB|AND|IOR|XOR|NOT|MOV|JMP|JZ|JNZ|JC|JNC|JS|JNS|JV|JNV)\b" },
+        { TokenType.OPCODE, @"^(NOP|ADD|ADC|LDI|LDR|MOV|JMP|JZ|JNZ|HLT)\b" },
         { TokenType.REGISTER, @"^(R[\dA-F])" },
-        { TokenType.IMMEDIATE, @"^((0B[01]+)|(0X[\dA-F]+)|(-?(\d*.)?\d+))" },
+        { TokenType.BIN_IMM, @"^(0B[01]+)" },
+        { TokenType.HEX_IMM, @"^(0X[\dA-F]+)"},
+        { TokenType.DEC_IMM, @"^(-?(\d+))"},
+        { TokenType.FLOAT_IMM, @"^(-?(\d*.)?\d+F)"},
+        { TokenType.ORIGIN, @"^@[A-F\d]{4}"},
+        { TokenType.COLON, @"^:"},
         { TokenType.LBRACKET, @"^\[" },
         { TokenType.RBRACKET, @"^\]" },
         { TokenType.PLUS, @"^\+" },
         { TokenType.COMMENT, @"^;.*" },
-        { TokenType.LABEL, @"^[_A-Z][A-Z\d_]*\s*:"},
+        { TokenType.LABEL, @"^[_A-Z][_A-Z\d]*"},
         { TokenType.NEWLINE, @"^\n"},
         { TokenType.COMMA, @"^,"}
     };
@@ -29,16 +34,16 @@ public static class Tokenizer
         throw new Exception("Could not tokenize on: " + code.Split()[0]);
     }
 
-    public static List<Token> Tokenize(string code)
+    public static Queue<Token> Tokenize(string code)
     {
-        List<Token> tokens = [];
+        Queue<Token> tokens = [];
         while ((code = code.Trim(['\t', '\r', ' '])).Length > 0)
         {
             var tok = TokenizeOnce(code);
             code = code[tok.Value.Length..];
-            tokens.Add(tok);
+            tokens.Enqueue(tok);
         }
-
+        tokens.Enqueue(new Token(TokenType.NEWLINE, "\n"));
         return tokens;
     }
 }
@@ -51,10 +56,15 @@ public record Token(TokenType Type, string Value)
 public enum TokenType
 {
     LABEL,
+    ORIGIN,
+    COLON,
     COMMA,
     OPCODE,
     REGISTER,
-    IMMEDIATE,
+    BIN_IMM,
+    HEX_IMM,
+    DEC_IMM,
+    FLOAT_IMM,
     LBRACKET,
     RBRACKET,
     PLUS,
