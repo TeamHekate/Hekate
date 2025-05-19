@@ -62,7 +62,7 @@ public class PeripheralDevice
         return res;
     }
 
-    private PeripheralDevice(string portName)
+    public PeripheralDevice(string portName)
     {
         DeviceName = portName;
         _port = null;
@@ -72,19 +72,6 @@ public class PeripheralDevice
         _port.Open();
         if (!_port.IsOpen) _port.Open();
         DeviceName = Identify();
-    }
-
-    public static PeripheralDevice? Connect(string portName)
-    {
-        try
-        {
-            return new PeripheralDevice(portName);
-        }
-        catch (Exception e)
-        {
-            Console.Error.WriteLine(e.ToString());
-            return null;
-        }
     }
 
     public void Close()

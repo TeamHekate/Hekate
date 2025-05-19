@@ -46,7 +46,7 @@
                     <Border>
                         <StackPanel Orientation="Horizontal" Spacing="5">
                             <TextBlock Text="{Binding PortName}" VerticalAlignment="Center" />
-                            <CheckBox IsChecked="{Binding IsActive}" />
+                            <CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}" />
                             <TextBlock Text="Address" VerticalAlignment="Center" />
                             <cc:HexTextBox Text="{Binding StartAddress}" />
                             <TextBlock Text="Length" VerticalAlignment="Center" />
@@ -58,7 +58,7 @@
             </Border>
         </DataTemplate>
     </Window.DataTemplates>
-
+    
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
@@ -422,7 +422,17 @@
                         Margin="0,0,0,15">
                     <TabControl>
                         <TabItem Header="RAM">
-                            <ItemsControl ItemsSource="{Binding RamPage}" />
+                            <StackPanel Orientation="Vertical" Spacing="10">
+                                <ItemsControl ItemsSource="{Binding RamPage}" />
+                                <!-- Go to RAM Address Box/-->
+                                <Border>
+                                    <StackPanel Orientation="Horizontal" Spacing="5">
+                                        <TextBlock Text="Go to RAM Address:" VerticalAlignment="Center"/>
+                                        <cc:HexTextBox Text="{Binding RamAddressString}" />
+                                        <Button Content="Go!" Command="{Binding ClickRamAddressCommand}"/>
+                                    </StackPanel>
+                                </Border>
+                            </StackPanel>
                         </TabItem>
                         <TabItem Header="ROM">
                             <ItemsControl ItemsSource="{Binding RomPage}" />
@@ -439,12 +449,12 @@
                                         HorizontalContentAlignment="Center"
                                         Margin="5" IsEnabled="{Binding !IsRunning}" />
                                 <Button Grid.Row="0" Grid.Column="1" Content="Apply Changes"
-                                        Command="{Binding ApplyDeviceConfigCommand}"
+                                        Command="{Binding ApplyDevicesCommand}"
                                         HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                         HorizontalContentAlignment="Center"
                                         Margin="5" IsEnabled="{Binding !IsRunning}" />
                                 <ItemsControl Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1"
-                                              ItemsSource="{Binding DeviceManager.Devices}">
+                                              ItemsSource="{Binding Devices}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Vertical" Spacing="10" />
@@ -457,7 +467,7 @@
                 </Border>
 
 
-                <Border Grid.Row="2" Background="#000000" BorderBrush="{StaticResource Black}" BorderThickness="1"
+                <!-- Border Grid.Row="2" Background="#000000" BorderBrush="{StaticResource Black}" BorderThickness="1"
                         CornerRadius="15" Padding="15">
                     <Grid RowDefinitions="Auto,Auto,Auto,Auto">
                         <TextBlock Grid.Row="0" Text="Value Converter" Foreground="White" FontSize="14"
@@ -502,7 +512,7 @@
                             </Border>
                         </Grid>
                     </Grid>
-                </Border>
+                </-->
             </Grid>
         </Grid>
     </Grid>
