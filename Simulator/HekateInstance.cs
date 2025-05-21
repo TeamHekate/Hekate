@@ -29,20 +29,42 @@ public class HekateInstance
         return (Opcode)ir switch
         {
             Opcode.Noop => NoOperation.Execute(this),
-
             Opcode.Halt => Halt.Execute(this),
+            
+            // Arithmetic
             Opcode.Add => Add.Execute(this),
             Opcode.AddC => AddCarry.Execute(this),
-
+            Opcode.Increment => Increment.Execute(this),
+            Opcode.Decrement => Decrement.Execute(this),
+            Opcode.DecimalAdjust => DecimalAdjust.Execute(this),
+            Opcode.ArithmeticShiftLeft => ArithmeticShiftLeft.Execute(this),
+            Opcode.ArithmeticShiftRight => ArithmeticShiftRight.Execute(this),
+            
+            // Memory
             Opcode.LoadImm => LoadImmediate.Execute(this),
             Opcode.LoadRom => LoadRom.Execute(this),
             Opcode.LoadRam => LoadRam.Execute(this),
             Opcode.StoreRam => StoreRam.Execute(this),
             Opcode.MoveReg => MoveRegister.Execute(this),
-
+            
+            // Control Flow
             Opcode.Jump => Jump.Execute(this),
             Opcode.JumpZero => JumpZero.Execute(this),
             Opcode.JumpNotZero => JumpNotZero.Execute(this),
+            
+            // Logical
+            Opcode.And => And.Execute(this),
+            Opcode.Ior => Ior.Execute(this),
+            Opcode.Xor => Xor.Execute(this),
+            Opcode.Invert => Invert.Execute(this),
+            Opcode.Negate => Negate.Execute(this),
+            Opcode.Mirror => Mirror.Execute(this),
+            Opcode.ShiftLeft => ShiftLeft.Execute(this),
+            Opcode.ShiftRight => ShiftRight.Execute(this),
+            Opcode.RotateLeft => RotateLeft.Execute(this),
+            Opcode.RotateRight => RotateRight.Execute(this),
+            Opcode.RotateCarryLeft => RotateCarryLeft.Execute(this),
+            Opcode.RotateCarryRight => RotateCarryRight.Execute(this),
 
             _ => throw new NotImplementedException("[SIMULATOR] Unknown Opcode: " + ir.ToString("X2"))
         };
