@@ -10,7 +10,8 @@ public abstract class LoadRam : IInstruction
 
         var dstIx = (byte)(reg >> 4);
         var adrIx = (byte)(reg & 0xf);
-        var regOffset = Utilities.SignExtend(cpu.Registers[adrIx]);
+        // Extend by sign so that the 16-bit addition works with a 
+        var regOffset = Utilities.SignExtend(cpu.Registers[adrIx]); 
         var address = (ushort)((offs | (page << 8)) + regOffset);
 
         var val = cpu.ReadRamLocation(address, out var wasMapped);

@@ -20,7 +20,6 @@ public class RegisterFile
         set
         {
             if (index != 0) _registers[index] = value;
-            else Console.WriteLine("Cannot write to hardwired register 0.");
         }
     }
 

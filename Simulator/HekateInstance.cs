@@ -29,6 +29,7 @@ public class HekateInstance
         return (Opcode)ir switch
         {
             Opcode.Noop => NoOperation.Execute(this),
+            Opcode.ClearZero => ClearFlagZero.Execute(this),
 
             Opcode.Halt => Halt.Execute(this),
             Opcode.Add => Add.Execute(this),
@@ -59,6 +60,7 @@ public class HekateInstance
         _ram[address] = rx ?? 0xff;
         return _ram[address];
     }
+    
 
     public void WriteRamLocation(ushort address, byte value, ref bool wasMapped)
     {
@@ -71,6 +73,12 @@ public class HekateInstance
         }
         var offset = (ushort)(address - mapping.StartAddress);
         if (!mapping.Device.Write(value, offset)) Mapper.RemoveDevice(mapping.Device);
+    }
+    
+    public void WriteRamLocation(ushort address, byte value)
+    {
+        var m = false;
+        WriteRamLocation(address, value, ref m);
     }
 
     public byte ReadRomLocation(int address)

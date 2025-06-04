@@ -1,6 +1,6 @@
 namespace Simulator.Instructions.Memory;
 
-public class MoveRegister : IInstruction
+public abstract class MoveRegister : IInstruction
 {
     public static ExecutionResult Execute(HekateInstance cpu)
     {

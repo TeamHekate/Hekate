@@ -1,6 +1,6 @@
 namespace Simulator.Instructions.Memory;
 
-public class LoadRom : IInstruction
+public abstract class LoadRom : IInstruction
 {
     public static ExecutionResult Execute(HekateInstance cpu)
     {
@@ -10,6 +10,7 @@ public class LoadRom : IInstruction
 
         var dstIx = (byte)(reg >> 4);
         var adrIx = (byte)(reg & 0xf);
+        // Extend by sign so that the 16-bit addition works with an 8-bit offset
         var regOffset = Utilities.SignExtend(cpu.Registers[adrIx]);
         var address = (ushort)((offs | (page << 8)) + regOffset);
         var val = cpu.ReadRomLocation(address);

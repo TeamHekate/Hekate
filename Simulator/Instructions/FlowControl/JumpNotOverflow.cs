@@ -1,6 +1,6 @@
 namespace Simulator.Instructions.FlowControl;
 
-public abstract class JumpNotZero : IInstruction
+public abstract class JumpNotOverflow : IInstruction
 {
     public static ExecutionResult Execute(HekateInstance cpu)
     {
@@ -10,7 +10,7 @@ public abstract class JumpNotZero : IInstruction
         
         var jmp = (ushort)(arg0 | (arg1 << 8));
         var npc = (ushort)(cpu.Registers.ProgramCounter + 3);
-        cpu.Registers.ProgramCounter = (cpu.Registers.ZeroFlag) ? npc : jmp;
+        cpu.Registers.ProgramCounter = (cpu.Registers.OverflowFlag) ? npc : jmp;
         return new ExecutionResult(
             0,
             false,
