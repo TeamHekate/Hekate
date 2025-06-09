@@ -21,6 +21,9 @@ public abstract class AddFloat : IInstruction
         cpu.Registers.OverflowFlag = !dstInf && !srcInf && accInf;
         cpu.Registers.ZeroFlag = acc == 0;
 
+        cpu.Registers[dstIx] = acc;
+        cpu.Registers.ProgramCounter += 2;
+
         return new ExecutionResult(dstVal, true, false, false, 0, 0);
     }
 }

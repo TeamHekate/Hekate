@@ -27,7 +27,7 @@ public record ImmediateArg(string Value) : Argument
 public record LabeledArg(ushort Address, string? Label) : Argument
 {
     public ushort Address { get; set; } = Address;
-    
+
     public override string ToString()
     {
         return Address.ToString("X4");
@@ -147,31 +147,105 @@ public static class Parser
         {
             case "NOP":
             case "HLT":
+            case "CFZ":
+            case "SFZ":
+            case "CFC":
+            case "SFC":
+            case "CFS":
+            case "SFS":
+            case "CFV":
+            case "SFV":
             {
                 _currentAddress += 1;
                 return new InstructionNode(
                     oTok.Value switch
                     {
                         "NOP" => 0x00,
-                        "HLT" => 0xFF,
-                        _ => throw new Exception($"[Line {_line}] Unknown opcode: " + oTok.Value)
+                        "HLT" => 0x01,
+                        "CFZ" => 0x02,
+                        "SFZ" => 0x03,
+                        "CFC" => 0x04,
+                        "SFC" => 0x05,
+                        "CFS" => 0x06,
+                        "SFS" => 0x07,
+                        "CFV" => 0x08,
+                        "SFV" => 0x09,
+                        "RET" => 0x0B,
+
+                        _ => 0x00
                     }
-                    );
+                );
             }
             case "ADD":
             case "ADC":
+            case "SUB":
+            case "SBB":
+            case "SHL":
+            case "SHR":
+            case "ROL":
+            case "ROR":
+            case "RCL":
+            case "RCR":
+            case "ASR":
+            case "AND":
+            case "IOR":
+            case "XOR":
+            case "CMP":
+            case "ADDF":
+            case "SUBF":
             {
                 var dstReg = ParseRegisterArg();
                 Consume(TokenType.COMMA);
                 var srcReg = ParseRegisterArg();
                 _currentAddress += 2;
-                return oTok.Value switch
+                return new InstructionNode(oTok.Value switch
                 {
-                    "ADD" => new InstructionNode(0x10, dstReg, srcReg),
-                    "ADC" => new InstructionNode(0x11, dstReg, srcReg),
-                    _ => throw new  Exception($"[Line {_line}] Unknown opcode: " + oTok.Value),
-                };
+                    "ADD" => 0x10,
+                    "ADC" => 0x11,
+                    "SUB" => 0x12,
+                    "SBB" => 0x13,
+                    "SHL" => 0x14,
+                    "SHR" => 0x15,
+                    "ROL" => 0x16,
+                    "ROR" => 0x17,
+                    "RCL" => 0x18,
+                    "RCR" => 0x19,
+                    "ASR" => 0x1A,
+                    "AND" => 0x1B,
+                    "IOR" => 0x1C,
+                    "XOR" => 0x1D,
+                    "CMP" => 0x1E,
+                    "ADDF" => 0x50,
+                    "SUBF" => 0x51,
+                    _ => 0x1E
+                }, dstReg, srcReg);
             }
+
+            case "PUSH":
+            case "POP":
+            case "INC":
+            case "DEC":
+            case "INV":
+            case "NEG":
+            case "MIR":
+            {
+                var target = ParseRegisterArg();
+                _currentAddress += 1;
+                return new InstructionNode(
+                    oTok.Value switch
+                    {
+                        "POP" => 0x25,
+                        "PUSH" => 0x26,
+                        "INC" => 0x30,
+                        "DEC" => 0x31,
+                        "INV" => 0x32,
+                        "NEG" => 0x33,
+                        "MIR" => 0x34,
+                        _ => 0x30
+                    }, target
+                    );
+            }
+
             case "LDI":
             {
                 var dstReg = ParseRegisterArg();
@@ -222,15 +296,30 @@ public static class Parser
                     $"[Line {_line}] Was expecting a register or address after MOV, got "
                     + Peek().Type);
             }
+            case "CALL":
             case "JMP":
             case "JZ":
             case "JNZ":
+            case "JC":
+            case "JNC":
+            case "JS":
+            case "JNS":
+            case "JV":
+            case "JNV":
             {
                 var opc = (byte)(oTok.Value switch
                 {
+                    "CALL" => 0x0A,
                     "JMP" => 0x40,
                     "JZ" => 0x42,
-                    _ => 0x43
+                    "JNZ" => 0x43,
+                    "JC" => 0x44,
+                    "JNC" => 0x45,
+                    "JS" => 0x46,
+                    "JNS" => 0x47,
+                    "JV" => 0x48,
+                    "JNV" => 0x49,
+                    _ => 0x40
                 });
                 return new InstructionNode(opc, ParseJumpTargetArg());
             }
@@ -256,10 +345,10 @@ public static class Parser
         {
             if (Peek().Type == TokenType.LABEL)
                 ParseLabel();
-            if(Peek().Type == TokenType.OPCODE)
+            if (Peek().Type == TokenType.OPCODE)
                 q.Enqueue(ParseInstruction());
         }
-        
+
         if (Peek().Type == TokenType.COMMENT)
             Consume(TokenType.COMMENT);
         Consume(TokenType.NEWLINE);
@@ -293,7 +382,7 @@ public static class Parser
             while (ln.Count > 0) q.Enqueue(ln.Dequeue());
             _line++;
         }
-        
+
         ResolveLabels();
 
         return q;

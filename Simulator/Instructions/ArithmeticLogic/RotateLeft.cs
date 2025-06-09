@@ -7,15 +7,8 @@ public abstract class RotateLeft : IInstruction
         var arg0 = cpu.ReadRomAtPc(1);
         
         var dstIx = (byte)((arg0 >> 4) & 0x0f);
-        var rotateAmount = (byte)(arg0 & 0x0f);
-        
-        // Guard against 0 and >7 rotates
-        if (rotateAmount is 0 or >7)
-        {
-            // Or call nop twice
-            cpu.Registers.ProgramCounter += 2;
-            return new ExecutionResult(0, false, false, false, 0, 0);
-        }
+        var srcIx = (byte)(arg0 & 0x0f);
+        var rotateAmount = (byte)(cpu.Registers[srcIx] & 0x7);
         
         var dstVal = cpu.Registers[dstIx];
 

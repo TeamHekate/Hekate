@@ -7,16 +7,8 @@ public abstract class RotateCarryRight : IInstruction
         var arg0 = cpu.ReadRomAtPc(1);
         
         var dstIx = (byte)((arg0 >> 4) & 0x0f);
-        var rotateAmount = (byte)(arg0 & 0x0f);
-        
-        // Guard against 0 and >8 rotates
-        // >8 since we're dealing with 9-bit rotations (8-bit + Carry)
-        if (rotateAmount is 0 or >8)
-        {
-            // Or call nop twice
-            cpu.Registers.ProgramCounter += 2;
-            return new ExecutionResult(0, false, false, false, 0, 0);
-        }
+        var srcIx = (byte)(arg0 & 0x0f);
+        var rotateAmount = (byte)(cpu.Registers[srcIx] & 0x7);
         
         var acc = cpu.Registers[dstIx];
         var carry = cpu.Registers.CarryFlag;

@@ -7,15 +7,8 @@ public abstract class ArithmeticShiftRight : IInstruction
         var arg0 = cpu.ReadRomAtPc(1);
         
         var dstIx = (byte)((arg0 >> 4) & 0x0f);
-        var shiftAmount = (byte)(arg0 & 0x0f);
-        
-        // Guard against 0 shifts, (shiftAmount - 1) would make an error.
-        if (shiftAmount is 0)
-        {
-            // Or call nop twice
-            cpu.Registers.ProgramCounter += 2;
-            return new ExecutionResult(0, false, false, false, 0, 0);
-        }
+        var srcIx = (byte)(arg0 & 0x0f);
+        var shiftAmount = (byte)(cpu.Registers[srcIx]);
         
         var acc = (byte) cpu.Registers[dstIx];
         

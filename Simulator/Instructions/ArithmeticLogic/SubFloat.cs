@@ -1,6 +1,6 @@
 namespace Simulator.Instructions.ArithmeticLogic;
 
-public class SubFloat : IInstruction
+public abstract class SubFloat : IInstruction
 {
     public static ExecutionResult Execute(HekateInstance cpu)
     {
@@ -20,6 +20,9 @@ public class SubFloat : IInstruction
         cpu.Registers.SignFlag = (acc & 0x80) != 0;
         cpu.Registers.OverflowFlag = !dstInf && !srcInf && accInf;
         cpu.Registers.ZeroFlag = acc == 0;
+        
+        cpu.Registers[dstIx] = acc;
+        cpu.Registers.ProgramCounter += 2;
 
         return new ExecutionResult(dstVal, true, false, false, 0, 0);
     }

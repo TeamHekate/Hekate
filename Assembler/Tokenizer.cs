@@ -6,31 +6,35 @@ public static class Tokenizer
 {
     private static readonly Dictionary<TokenType, string> TokenPatterns = new()
     {
-        { TokenType.OPCODE, @"^(NOP|ADD|ADC|LDI|LDR|MOV|JMP|JZ|JNZ|HLT)\b" },
+        {
+            TokenType.OPCODE,
+            @"^(NOP|HLT|CFZ|SFZ|CFC|SFC|CFS|SFS|CFV|SFV|CALL|RET|ADD|ADC|SUB|SBB|SHL|SHR|ROL|ROR|RCL|RCR|ASR|AND|IOR|XOR|CMP|ADDF|SUBF|INC|DEC|INV|NEG|MIR|LDI|LDR|MOV|POP|PUSH|JMP|JZ|JNZ|JC|JNC|JS|JNS|JV|JNV)\b"
+        },
         { TokenType.REGISTER, @"^(R[\dA-F])" },
+        { TokenType.FLOAT_IMM, @"^(-?(\d*.)?\d+F)\b" },
         { TokenType.BIN_IMM, @"^(0B[01]+)" },
-        { TokenType.HEX_IMM, @"^(0X[\dA-F]+)"},
-        { TokenType.DEC_IMM, @"^(-?(\d+))"},
-        { TokenType.FLOAT_IMM, @"^(-?(\d*.)?\d+F)"},
-        { TokenType.ORIGIN, @"^@[A-F\d]{4}"},
-        { TokenType.COLON, @"^:"},
+        { TokenType.HEX_IMM, @"^(0X[\dA-F]+)" },
+        { TokenType.DEC_IMM, @"^(-?(\d+))" },
+        { TokenType.ORIGIN, @"^@[A-F\d]{4}" },
+        { TokenType.COLON, @"^:" },
         { TokenType.LBRACKET, @"^\[" },
         { TokenType.RBRACKET, @"^\]" },
         { TokenType.PLUS, @"^\+" },
         { TokenType.COMMENT, @"^;.*" },
-        { TokenType.LABEL, @"^[_A-Z][_A-Z\d]*"},
-        { TokenType.NEWLINE, @"^\n"},
-        { TokenType.COMMA, @"^,"}
+        { TokenType.LABEL, @"^[_A-Z][_A-Z\d]*" },
+        { TokenType.NEWLINE, @"^\n" },
+        { TokenType.COMMA, @"^," }
     };
 
     private static Token TokenizeOnce(string code)
     {
-        foreach(var t in TokenPatterns.Keys)
+        foreach (var t in TokenPatterns.Keys)
         {
             var pattern = TokenPatterns[t];
             var match = Regex.Match(code, pattern, RegexOptions.IgnoreCase);
             if (match.Success) return new Token(t, match.Value);
         }
+
         throw new Exception("Could not tokenize on: " + code.Split()[0]);
     }
 
@@ -43,6 +47,7 @@ public static class Tokenizer
             code = code[tok.Value.Length..];
             tokens.Enqueue(tok);
         }
+
         tokens.Enqueue(new Token(TokenType.NEWLINE, "\n"));
         return tokens;
     }

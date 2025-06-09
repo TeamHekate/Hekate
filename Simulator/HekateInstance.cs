@@ -29,16 +29,23 @@ public class HekateInstance
         return (Opcode)ir switch
         {
             Opcode.Noop => NoOperation.Execute(this),
-            Opcode.ClearZero => ClearFlagZero.Execute(this),
             Opcode.Halt => Halt.Execute(this),
+            Opcode.ClearZero => ClearFlagZero.Execute(this),
+            Opcode.SetZero => SetFlagZero.Execute(this),
+            Opcode.ClearCarry => ClearFlagCarry.Execute(this),
+            Opcode.SetCarry => SetFlagCarry.Execute(this),
+            Opcode.ClearSign => ClearFlagSign.Execute(this),
+            Opcode.SetSign => SetFlagSign.Execute(this),
+            Opcode.ClearOverflow => ClearFlagOverflow.Execute(this),
+            Opcode.SetOverflow => SetFlagOverflow.Execute(this),
+            Opcode.Call => Call.Execute(this),
+            Opcode.Ret => Ret.Execute(this),
             
             // Arithmetic-Logic
             Opcode.Add => Add.Execute(this),
             Opcode.AddC => AddCarry.Execute(this),
             Opcode.Increment => Increment.Execute(this),
             Opcode.Decrement => Decrement.Execute(this),
-            Opcode.DecimalAdjust => DecimalAdjust.Execute(this),
-            Opcode.ArithmeticShiftLeft => ArithmeticShiftLeft.Execute(this),
             Opcode.ArithmeticShiftRight => ArithmeticShiftRight.Execute(this),
             Opcode.And => And.Execute(this),
             Opcode.Ior => Ior.Execute(this),
@@ -52,6 +59,11 @@ public class HekateInstance
             Opcode.RotateRight => RotateRight.Execute(this),
             Opcode.RotateCarryLeft => RotateCarryLeft.Execute(this),
             Opcode.RotateCarryRight => RotateCarryRight.Execute(this),
+            Opcode.Sub => Sub.Execute(this),
+            Opcode.SubB => SubBorrow.Execute(this),
+            Opcode.Compare => Compare.Execute(this),
+            Opcode.AddF => AddFloat.Execute(this),
+            Opcode.SubF => SubFloat.Execute(this),
             
             // Memory
             Opcode.LoadImm => LoadImmediate.Execute(this),
@@ -59,15 +71,20 @@ public class HekateInstance
             Opcode.LoadRam => LoadRam.Execute(this),
             Opcode.StoreRam => StoreRam.Execute(this),
             Opcode.MoveReg => MoveRegister.Execute(this),
+            Opcode.Push => Push.Execute(this),
+            Opcode.Pop => Pop.Execute(this),
             
             // Control Flow
             Opcode.Jump => Jump.Execute(this),
             Opcode.JumpZero => JumpZero.Execute(this),
             Opcode.JumpNotZero => JumpNotZero.Execute(this),
-            
-            
-
-            _ => throw new NotImplementedException("[SIMULATOR] Unknown Opcode: " + ir.ToString("X2"))
+            Opcode.JumpCarry => JumpCarry.Execute(this),
+            Opcode.JumpNotCarry => JumpNotCarry.Execute(this),
+            Opcode.JumpSign => JumpSign.Execute(this),
+            Opcode.JumpNotSign => JumpNotSign.Execute(this),
+            Opcode.JumpOverflow => JumpOverflow.Execute(this),
+            Opcode.JumpNotOverflow => JumpNotOverflow.Execute(this),
+            _ => throw new InvalidOperationException($"Invalid opcode {ir:X2}")
         };
     }
 
@@ -83,23 +100,20 @@ public class HekateInstance
         return _ram[address];
     }
 
-    public void WriteRamLocation(ushort address, byte value, ref bool wasMapped)
+    public bool WriteRamLocation(ushort address, byte value)
     {
         var mapping = Mapper.GetAddressMapping(address);
-        wasMapped = mapping != null;
+        var wasMapped = mapping != null;
         if (mapping is null)
         {
             _ram[address] = value;
-            return;
+            return wasMapped;
         }
         var offset = (ushort)(address - mapping.StartAddress);
-        if (!mapping.Device.Write(value, offset)) Mapper.RemoveDevice(mapping.Device);
-    }
-    
-    public void WriteRamLocation(ushort address, byte value)
-    {
-        var m = false;
-        WriteRamLocation(address, value, ref m);
+        if (mapping.Device.Write(value, offset)) return wasMapped;
+        Console.WriteLine("Could not write do device, disconnecting.");
+        Mapper.RemoveDevice(mapping.Device);
+        return false;
     }
 
     public byte ReadRomLocation(int address)

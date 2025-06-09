@@ -262,7 +262,7 @@ namespace Frontend.ViewModels
             }
             catch (Exception e)
             {
-                MessageBoxManager.GetMessageBoxStandard("Error", e.Message).ShowAsync();
+                MessageBoxManager.GetMessageBoxStandard("Error", e.Message + "\n" + e.StackTrace).ShowAsync();
             }
         }
 
