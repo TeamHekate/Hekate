@@ -230,7 +230,7 @@ public static class Parser
             case "MIR":
             {
                 var target = ParseRegisterArg();
-                _currentAddress += 1;
+                _currentAddress += 2;
                 return new InstructionNode(
                     oTok.Value switch
                     {
@@ -243,7 +243,7 @@ public static class Parser
                         "MIR" => 0x34,
                         _ => 0x30
                     }, target
-                    );
+                );
             }
 
             case "LDI":
@@ -306,6 +306,10 @@ public static class Parser
             case "JNS":
             case "JV":
             case "JNV":
+            case "JG":
+            case "JLE":
+            case "JL":
+            case "JGE":
             {
                 var opc = (byte)(oTok.Value switch
                 {
@@ -319,6 +323,10 @@ public static class Parser
                     "JNS" => 0x47,
                     "JV" => 0x48,
                     "JNV" => 0x49,
+                    "JG" => 0x4A,
+                    "JLE" => 0x4B, 
+                    "JL" => 0x4C,
+                    "JGE" => 0x4D,
                     _ => 0x40
                 });
                 return new InstructionNode(opc, ParseJumpTargetArg());

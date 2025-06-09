@@ -13,7 +13,6 @@ public enum Opcode
     SetSign = 0x07,     // SFS
     ClearOverflow = 0x08,   // CFV
     SetOverflow = 0x09,     // SFV
-    Call = 0x0A,            // CALL i16
     Ret = 0x0B,             // RET
     
     // Arithmetic-Logic
@@ -52,6 +51,7 @@ public enum Opcode
 
     
     // Control Flow
+    Call = 0x0A,            // CALL i16
     Jump = 0x40,        // JMP [ah:al]
     JumpZero = 0x42,    // JZ [ah:al]
     JumpNotZero = 0x43, // JNZ [ah:al]
@@ -61,4 +61,8 @@ public enum Opcode
     JumpNotSign = 0x47,
     JumpOverflow = 0x48,
     JumpNotOverflow = 0x49,
+    JumpGreater = 0x4A,
+    JumpLessEqual = 0x4B,
+    JumpLess = 0x4C,
+    JumpGreaterEqual = 0x4D
 }

@@ -84,7 +84,11 @@ public class HekateInstance
             Opcode.JumpNotSign => JumpNotSign.Execute(this),
             Opcode.JumpOverflow => JumpOverflow.Execute(this),
             Opcode.JumpNotOverflow => JumpNotOverflow.Execute(this),
-            _ => throw new InvalidOperationException($"Invalid opcode {ir:X2}")
+            Opcode.JumpGreater => JumpGreater.Execute(this),
+            Opcode.JumpLessEqual => JumpLessEqual.Execute(this),
+            Opcode.JumpLess => JumpLess.Execute(this),
+            Opcode.JumpGreaterEqual => JumpGreaterEqual.Execute(this),
+            _ => throw new InvalidOperationException($"Invalid opcode: {ir:X2}")
         };
     }
 

@@ -21,60 +21,64 @@ public static class Generator
 
     private static readonly Dictionary<byte, InstructionMode> Modes = new()
     {
-        { 0x00, InstructionMode.None },
-        { 0x01, InstructionMode.None },
-        { 0x02, InstructionMode.None },
-        { 0x03, InstructionMode.None },
-        { 0x04, InstructionMode.None },
-        { 0x05, InstructionMode.None },
-        { 0x06, InstructionMode.None },
-        { 0x07, InstructionMode.None },
-        { 0x08, InstructionMode.None },
-        { 0x09, InstructionMode.None },
-        { 0x0B, InstructionMode.None },
+        { 0x00, InstructionMode.None }, // nop
+        { 0x01, InstructionMode.None }, // hlt
+        { 0x02, InstructionMode.None }, // cfz
+        { 0x03, InstructionMode.None }, // sfz
+        { 0x04, InstructionMode.None }, // cfc
+        { 0x05, InstructionMode.None }, // sfc
+        { 0x06, InstructionMode.None }, // cfs
+        { 0x07, InstructionMode.None }, // sfs
+        { 0x08, InstructionMode.None }, // cfv
+        { 0x09, InstructionMode.None }, // sfv
+        { 0x0B, InstructionMode.None }, // ret
 
-        { 0x10, InstructionMode.RegReg },
-        { 0x11, InstructionMode.RegReg },
-        { 0x12, InstructionMode.RegReg },
-        { 0x13, InstructionMode.RegReg },
-        { 0x14, InstructionMode.RegReg },
-        { 0x15, InstructionMode.RegReg },
-        { 0x16, InstructionMode.RegReg },
-        { 0x17, InstructionMode.RegReg },
-        { 0x18, InstructionMode.RegReg },
-        { 0x19, InstructionMode.RegReg },
-        { 0x1A, InstructionMode.RegReg },
-        { 0x1B, InstructionMode.RegReg },
-        { 0x1C, InstructionMode.RegReg },
-        { 0x1D, InstructionMode.RegReg },
-        { 0x1E, InstructionMode.RegReg },
-        { 0x50, InstructionMode.RegReg },
-        { 0x51, InstructionMode.RegReg },
+        { 0x10, InstructionMode.RegReg }, // add
+        { 0x11, InstructionMode.RegReg }, // adc
+        { 0x12, InstructionMode.RegReg }, // sub
+        { 0x13, InstructionMode.RegReg }, // sbc
+        { 0x14, InstructionMode.RegReg }, // shl
+        { 0x15, InstructionMode.RegReg }, // shr
+        { 0x16, InstructionMode.RegReg }, // rol
+        { 0x17, InstructionMode.RegReg }, // ror
+        { 0x18, InstructionMode.RegReg }, // rcl
+        { 0x19, InstructionMode.RegReg }, // rcr
+        { 0x1A, InstructionMode.RegReg }, // asr
+        { 0x1B, InstructionMode.RegReg }, // and
+        { 0x1C, InstructionMode.RegReg }, // ior
+        { 0x1D, InstructionMode.RegReg }, // xor
+        { 0x1E, InstructionMode.RegReg }, // cmp
+        { 0x50, InstructionMode.RegReg }, // addf
+        { 0x51, InstructionMode.RegReg }, // subf
 
-        { 0x26, InstructionMode.RegSrc },
-        { 0x25, InstructionMode.RegDst },
-        { 0x30, InstructionMode.RegDst },
-        { 0x31, InstructionMode.RegDst },
-        { 0x32, InstructionMode.RegDst },
-        { 0x33, InstructionMode.RegDst },
-        { 0x34, InstructionMode.RegDst },
+        { 0x26, InstructionMode.RegSrc }, // push
+        { 0x25, InstructionMode.RegDst }, // pop
+        { 0x30, InstructionMode.RegDst }, // inc
+        { 0x31, InstructionMode.RegDst }, // dec
+        { 0x32, InstructionMode.RegDst }, // inv
+        { 0x33, InstructionMode.RegDst }, // neg
+        { 0x34, InstructionMode.RegDst }, // mir
 
-        { 0x20, InstructionMode.RegImm },
-        { 0x21, InstructionMode.RegMem },
-        { 0x22, InstructionMode.MemReg },
-        { 0x23, InstructionMode.RegMem },
-        { 0x24, InstructionMode.RegReg },
+        { 0x20, InstructionMode.RegImm }, // ldi
+        { 0x21, InstructionMode.RegMem }, // ldr
+        { 0x22, InstructionMode.MemReg }, // mov (store ram)
+        { 0x23, InstructionMode.RegMem }, // mov (load ram)
+        { 0x24, InstructionMode.RegReg }, // mov (reg-reg)
 
-        { 0x0A, InstructionMode.Jump },
-        { 0x40, InstructionMode.Jump },
-        { 0x42, InstructionMode.Jump },
-        { 0x43, InstructionMode.Jump },
-        { 0x44, InstructionMode.Jump },
-        { 0x45, InstructionMode.Jump },
-        { 0x46, InstructionMode.Jump },
-        { 0x47, InstructionMode.Jump },
-        { 0x48, InstructionMode.Jump },
-        { 0x49, InstructionMode.Jump },
+        { 0x0A, InstructionMode.Jump }, // call
+        { 0x40, InstructionMode.Jump }, // jmp
+        { 0x42, InstructionMode.Jump }, // jz
+        { 0x43, InstructionMode.Jump }, // jnz
+        { 0x44, InstructionMode.Jump }, // jc
+        { 0x45, InstructionMode.Jump }, // jnc
+        { 0x46, InstructionMode.Jump }, // js
+        { 0x47, InstructionMode.Jump }, // jns
+        { 0x48, InstructionMode.Jump }, // jv
+        { 0x49, InstructionMode.Jump }, // jnv
+        { 0x4A, InstructionMode.Jump }, // jg
+        { 0x4B, InstructionMode.Jump }, // jle
+        { 0x4C, InstructionMode.Jump }, // jl
+        { 0x4D, InstructionMode.Jump }, // jge
     };
 
     private static void ApplyOrigin(OriginNode node)
