@@ -155,6 +155,7 @@ public static class Parser
             case "SFS":
             case "CFV":
             case "SFV":
+            case "RET":
             {
                 _currentAddress += 1;
                 return new InstructionNode(
@@ -171,7 +172,6 @@ public static class Parser
                         "CFV" => 0x08,
                         "SFV" => 0x09,
                         "RET" => 0x0B,
-
                         _ => 0x00
                     }
                 );

@@ -11,7 +11,7 @@ public abstract class SubBorrow : IInstruction
         var dstVal = cpu.Registers[dstIx];
         var srcVal = cpu.Registers[srcIx];
 
-        var acc = (ushort)(srcVal - (dstVal + (cpu.Registers.CarryFlag ? 1 : 0)));
+        var acc = (ushort)(dstVal - (srcVal + (cpu.Registers.CarryFlag ? 1 : 0)));
 
         var dstSign = (dstVal & 0x80) != 0;
         var srcSign = (srcVal & 0x80) != 0;

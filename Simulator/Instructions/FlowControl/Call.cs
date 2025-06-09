@@ -1,6 +1,6 @@
 namespace Simulator.Instructions.FlowControl;
 
-public class Call : IInstruction
+public abstract class Call : IInstruction
 {
     public static ExecutionResult Execute(HekateInstance cpu)
     {
@@ -15,7 +15,7 @@ public class Call : IInstruction
         cpu.WriteRamLocation(--cpu.Registers.StackPointer, retAddressH);
         cpu.Registers.ProgramCounter = callAddr;
 
-        var spa = (byte)(cpu.Registers.StackPointer + 1);
+        var spa = (ushort)(cpu.Registers.StackPointer + 1);
         
         return new ExecutionResult(
             0, false, true, true, (byte)(spa >> 8), (byte)(spa & 0xff));

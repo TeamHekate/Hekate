@@ -1,6 +1,6 @@
 namespace Simulator.Instructions.FlowControl;
 
-public class Ret : IInstruction
+public abstract class Ret : IInstruction
 {
     public static ExecutionResult Execute(HekateInstance cpu)
     {

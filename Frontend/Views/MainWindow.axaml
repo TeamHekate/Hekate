@@ -70,7 +70,8 @@
                 <Button Content="COMPILE" Background="{StaticResource DarkPurple}"
                         Foreground="White"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
-                        Command="{Binding ClickCompileCommand} "/>
+                        Command="{Binding ClickCompileCommand}"
+                        IsEnabled="{Binding !IsRunning}"/>
                 <Button Name="ResetButton" Content="RESET" Background="{StaticResource DarkPurple}" Foreground="White"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
                         Command="{Binding ClickResetCommand}"
@@ -182,7 +183,7 @@
                                VerticalAlignment="Center" Margin="15,0,5,0" FontSize="12" FontWeight="SemiBold" />
                     <Border Grid.Column="5" Background="{StaticResource LightPurple}" Opacity="0.7" CornerRadius="3"
                             Padding="5" Height="30">
-                        <TextBlock Name="SPValue" Text="0000" Foreground="White" HorizontalAlignment="Center"
+                        <TextBlock Name="SPValue" Text="{Binding StackPointer}" Foreground="White" HorizontalAlignment="Center"
                                    VerticalAlignment="Center" FontSize="12" />
                     </Border>
                 </Grid>

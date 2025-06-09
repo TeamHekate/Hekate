@@ -11,7 +11,7 @@ public abstract class Compare : IInstruction
         var dstVal = cpu.Registers[dstIx];
         var srcVal = cpu.Registers[srcIx];
 
-        var acc = (ushort)(srcVal - dstVal);
+        var acc = (ushort)(dstVal - srcVal);
 
         var dstSign = (dstVal & 0x80) != 0;
         var srcSign = (srcVal & 0x80) != 0;

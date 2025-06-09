@@ -32,8 +32,8 @@ public enum Opcode
     Ior = 0x1C,                     // IOR r, r
     Xor = 0x1D,                     // XOR r, r
     Compare = 0x1E,                 // CMP r, r
-    AddF = 0x50,                    // ADF r, r
-    SubF = 0x51,                    // SBF r, r
+    AddF = 0x50,                    // ADDF r, r
+    SubF = 0x51,                    // SUBF r, r
     
     Increment = 0x30,               // INC r
     Decrement = 0x31,               // DEC r

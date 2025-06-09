@@ -64,6 +64,7 @@ namespace Frontend.ViewModels
         [ObservableProperty] private string _romAddressString = "0000";
         
         public string ProgramCounter => _cpu.Registers.ProgramCounter.ToString("X4");
+        public string StackPointer => _cpu.Registers.StackPointer.ToString("X4");
 
         public string[] Flags =>
         [
@@ -172,6 +173,7 @@ namespace Frontend.ViewModels
 
             if (LastExecutionResult.RegisterIndex != 0) UpdateRegisters();
             if (LastExecutionResult.Flags) OnPropertyChanged(nameof(Flags));
+            if (LastExecutionResult.Sp) OnPropertyChanged(nameof(StackPointer));
             OnPropertyChanged(nameof(ProgramCounter));
             if (_cpu.Registers.HaltFlag) OnPropertyChanged(nameof(IsHalted));
         }
@@ -179,8 +181,35 @@ namespace Frontend.ViewModels
         [RelayCommand]
         private void ClickStep()
         {
+            if (!IsRunning)
+            {
+                ClickStop();
+                _worker = new BackgroundWorker();
+                _worker.WorkerSupportsCancellation = true;
+                _worker.DoWork += (_, e) =>
+                {
+                    while (!_cpu.Registers.HaltFlag)
+                    {
+                        _busy.WaitOne();
+                        if (_worker.CancellationPending)
+                        {
+                            e.Cancel = true;
+                            return;
+                        }
+
+                        Dispatcher.UIThread.Invoke(StepSimulation);
+                        Thread.Sleep(TimeSpan.FromMilliseconds(1));
+                    }
+
+                    IsRunning = false;
+                    IsPaused = false;
+                };
+                _worker.RunWorkerCompleted += (_, _) => { IsRunning = false; };
+                if (!_worker.IsBusy)
+                    _worker.RunWorkerAsync();
+                IsRunning = true;
+            }
             _busy.Reset();
-            IsPaused = false;
             StepSimulation();
             IsPaused = true;
         }
@@ -259,6 +288,7 @@ namespace Frontend.ViewModels
                 Console.WriteLine("Compiled successfully.");
                 _cpu.LoadProgramAt(image, 0x0000);
                 UpdateRomPage();
+                ClickStop();
             }
             catch (Exception e)
             {
@@ -275,6 +305,8 @@ namespace Frontend.ViewModels
             UpdateRamPage();
             OnPropertyChanged(nameof(ProgramCounter));
             OnPropertyChanged(nameof(IsHalted));
+            IsPaused = false;
+            IsRunning = false;
         }
 
         private void RefreshDevices()
