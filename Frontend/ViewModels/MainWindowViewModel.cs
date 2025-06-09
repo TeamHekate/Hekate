@@ -342,8 +342,8 @@ namespace Frontend.ViewModels
             {
                 var config = Devices[i];
                 if (!config.IsActive) continue;
-                var address = ushort.Parse(config.StartAddress, NumberStyles.HexNumber);
-                var length = ushort.Parse(config.Length, NumberStyles.HexNumber);
+                var address = (ushort) int.Parse(config.StartAddress, NumberStyles.HexNumber);
+                var length = (ushort) int.Parse(config.Length, NumberStyles.HexNumber);
                 var success = false;
                 try
                 {
@@ -373,7 +373,7 @@ namespace Frontend.ViewModels
         [RelayCommand]
         private void ClickRamAddress()
         {
-            RamAddress = ushort.Parse(RamAddressString, NumberStyles.HexNumber);
+            RamAddress = (ushort) int.Parse(RamAddressString, NumberStyles.HexNumber);
         }
     }
 }
