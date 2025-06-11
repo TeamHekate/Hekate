@@ -396,7 +396,7 @@ namespace Frontend.ViewModels
         [RelayCommand]
         private void ClickRomAddress()
         {
-            RamAddress = (ushort)int.Parse(RomAddressString, NumberStyles.HexNumber);
+            RomAddress = (ushort)int.Parse(RomAddressString, NumberStyles.HexNumber);
         }
     }
 }
