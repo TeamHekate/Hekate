@@ -18,8 +18,8 @@ public class HekateInstance
 
     public MemoryMapper Mapper { get; } = new();
 
-    public Span<byte> GetRamPage(byte page) => new Span<byte>(_ram, page * 256, 256);
-    public Span<byte> GetRomPage(byte page) => new Span<byte>(_rom, page * 256, 256);
+    public Span<byte> GetRamPage(byte page) => new(_ram, page * 256, 256);
+    public Span<byte> GetRomPage(byte page) => new(_rom, page * 256, 256);
 
     public ExecutionResult Step()
     {

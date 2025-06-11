@@ -63,14 +63,21 @@ public class PeripheralDevice
 
     public PeripheralDevice(string portName)
     {
-        DeviceName = portName;
+        DeviceName = "-";
         _port = null;
         _port = new SerialPort(portName, 19200, Parity.None, 8, StopBits.One);
-        _port.ReadTimeout = 200;
-        _port.WriteTimeout = 200;
+        _port.ReadTimeout = 500;
+        _port.WriteTimeout = 500;
         _port.Open();
         if (!_port.IsOpen) _port.Open();
         DeviceName = Identify();
+        _port.ReadTimeout = _port.WriteTimeout = 200;
+    }
+
+    public void SetTimeout(ushort timeout)
+    {
+        if (_port == null) return;
+        _port.ReadTimeout = _port.WriteTimeout = timeout;
     }
 
     public void Close()

@@ -41,24 +41,24 @@
         <DataTemplate DataType="{x:Type models:PeripheralDeviceModel}">
             <Border BorderBrush="{StaticResource DarkPurple}" BorderThickness="1" CornerRadius="5"
                     HorizontalAlignment="Stretch">
-                <StackPanel Orientation="Horizontal" Spacing="5">
-                    <TextBlock Text="{Binding PortName}" VerticalAlignment="Center" />
-                    <Border>
-                        <StackPanel Orientation="Horizontal" Spacing="5">
-                            <TextBlock Text="{Binding PortName}" VerticalAlignment="Center" />
-                            <CheckBox IsChecked="{Binding IsActive, Mode=TwoWay}" />
-                            <TextBlock Text="Address" VerticalAlignment="Center" />
-                            <cc:HexTextBox Text="{Binding StartAddress}" />
-                            <TextBlock Text="Length" VerticalAlignment="Center" />
-                            <cc:HexTextBox Text="{Binding Length}" />
-                            <TextBlock Text="{Binding DeviceName}" />
-                        </StackPanel>
-                    </Border>
-                </StackPanel>
+                <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto,*" HorizontalAlignment="Stretch">
+                    <TextBlock Grid.Column="0" Text="{Binding PortName}" Margin="2.5,2.5,5,2.5"
+                               VerticalAlignment="Center" />
+                    <CheckBox Grid.Column="1" IsChecked="{Binding IsActive, Mode=TwoWay}" Margin="0,2.5,5,2.5"
+                              VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="2" Text="Address" Margin="0,2.5,5,2.5" VerticalAlignment="Center" />
+                    <cc:HexTextBox Grid.Column="3" Text="{Binding StartAddress}" Margin="0,2.5,5,2.5"
+                                   VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="4" Text="Length" Margin="0,2.5,5,2.5" VerticalAlignment="Center" />
+                    <cc:HexTextBox Grid.Column="5" Text="{Binding Length}" Margin="0,2.5,5,2.5"
+                                   VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="6" Text="{Binding DeviceName}" Margin="0,2.5,5,2.5"
+                               VerticalAlignment="Center" />
+                </Grid>
             </Border>
         </DataTemplate>
     </Window.DataTemplates>
-    
+
     <Design.DataContext>
         <vm:MainWindowViewModel />
     </Design.DataContext>
@@ -71,7 +71,7 @@
                         Foreground="White"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
                         Command="{Binding ClickCompileCommand}"
-                        IsEnabled="{Binding !IsRunning}"/>
+                        IsEnabled="{Binding !IsRunning}" />
                 <Button Name="ResetButton" Content="RESET" Background="{StaticResource DarkPurple}" Foreground="White"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
                         Command="{Binding ClickResetCommand}"
@@ -128,7 +128,7 @@
                 <Button Name="ImportButton" Content="IMPORT" Background="{StaticResource DarkPurple}"
                         Foreground="White"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold" />
-                
+
             </StackPanel>
 
             <StackPanel Grid.Column="2" Orientation="Horizontal">
@@ -159,7 +159,8 @@
                                       FontSize="16"
                                       Text="{Binding CurrentProgram}"
                                       BorderThickness="0"
-                                      Padding="15" />
+                                      Padding="15"
+                                      IsEnabled="{Binding !IsRunning}" />
                 </Border>
 
                 <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,*,Auto,*" Margin="0,0,0,15">
@@ -183,7 +184,8 @@
                                VerticalAlignment="Center" Margin="15,0,5,0" FontSize="12" FontWeight="SemiBold" />
                     <Border Grid.Column="5" Background="{StaticResource LightPurple}" Opacity="0.7" CornerRadius="3"
                             Padding="5" Height="30">
-                        <TextBlock Name="SPValue" Text="{Binding StackPointer}" Foreground="White" HorizontalAlignment="Center"
+                        <TextBlock Name="SPValue" Text="{Binding StackPointer}" Foreground="White"
+                                   HorizontalAlignment="Center"
                                    VerticalAlignment="Center" FontSize="12" />
                     </Border>
                 </Grid>
@@ -402,41 +404,42 @@
 
             <Grid Grid.Column="1" Width="20" />
             <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto">
-
-                <!--StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,10">
-					<Border Background="#8B008B" Padding="15,8" CornerRadius="3" Margin="0,0,5,0">
-						<TextBlock Text="ROM" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
-					</Border>
-					<Border Background="#8B008B" Padding="15,8" CornerRadius="3" Margin="0,0,5,0">
-						<TextBlock Text="RAM" Foreground="White" FontSize="11" FontWeight="SemiBold"/>
-					</Border>
-					<Border Background="Transparent" Padding="15,8" Margin="0,0,5,0">
-						<TextBlock Text="INSTRUCTIONS" Foreground="{StaticResource LightPurple}" FontSize="11" FontWeight="SemiBold"/>
-					</Border>
-					<Border Background="Transparent" Padding="15,8">
-						<TextBlock Text="I/O MAP" Foreground="{StaticResource LightPurple}" FontSize="11" FontWeight="SemiBold"/>
-					</Border>
-				</StackPanel-->
-
-
                 <Border Grid.Row="1" BorderBrush="{StaticResource Purple}" BorderThickness="2" CornerRadius="20"
                         Margin="0,0,0,15">
                     <TabControl>
                         <TabItem Header="RAM">
-                            <StackPanel Orientation="Vertical" Spacing="10">
-                                <ItemsControl ItemsSource="{Binding RamPage}" />
+                            <Grid VerticalAlignment="Stretch" RowDefinitions="Auto, Auto">
+                                <ItemsControl ItemsSource="{Binding RamPage}" Margin="10"/>
                                 <!-- Go to RAM Address Box/-->
-                                <Border>
-                                    <StackPanel Orientation="Horizontal" Spacing="5">
-                                        <TextBlock Text="Go to RAM Address:" VerticalAlignment="Center"/>
-                                        <cc:HexTextBox Text="{Binding RamAddressString}" />
-                                        <Button Content="Go!" Command="{Binding ClickRamAddressCommand}"/>
-                                    </StackPanel>
+                                <Border Grid.Row="1" VerticalAlignment="Stretch" BorderBrush="{StaticResource Purple}"
+                                        BorderThickness="1" CornerRadius="10" Margin="10">
+                                    <Grid ColumnDefinitions="Auto, Auto, Auto" VerticalAlignment="Top"
+                                          HorizontalAlignment="Center">
+                                        <TextBlock Grid.RowSpan="4" Grid.Column="0" Text="Go to RAM Address:"
+                                                   VerticalAlignment="Center" Margin="5" />
+                                        <cc:HexTextBox Grid.Column="1" Text="{Binding RamAddressString}" Margin="5" />
+                                        <Button Grid.Column="2" Content="Go!" Margin="5"
+                                                Command="{Binding ClickRamAddressCommand}" />
+                                    </Grid>
                                 </Border>
-                            </StackPanel>
+                            </Grid>
                         </TabItem>
                         <TabItem Header="ROM">
-                            <ItemsControl ItemsSource="{Binding RomPage}" />
+                            <Grid VerticalAlignment="Stretch" RowDefinitions="Auto, Auto">
+                                <ItemsControl ItemsSource="{Binding RomPage}" Margin="10"/>
+                                <!-- Go to ROM Address Box/-->
+                                <Border Grid.Row="1" VerticalAlignment="Stretch" BorderBrush="{StaticResource Purple}"
+                                        BorderThickness="1" CornerRadius="10" Margin="10">
+                                    <Grid ColumnDefinitions="Auto, Auto, Auto" VerticalAlignment="Top"
+                                          HorizontalAlignment="Center">
+                                        <TextBlock Grid.RowSpan="4" Grid.Column="0" Text="Go to ROM Address:"
+                                                   VerticalAlignment="Center" Margin="5" />
+                                        <cc:HexTextBox Grid.Column="1" Text="{Binding RomAddressString}" Margin="5" />
+                                        <Button Grid.Column="2" Content="Go!" Margin="5"
+                                                Command="{Binding ClickRomAddressCommand}" />
+                                    </Grid>
+                                </Border>
+                            </Grid>
                         </TabItem>
                         <TabItem Header="Instruction Sheet">
                             <TextBlock> To Be Implemented. </TextBlock>
@@ -466,54 +469,6 @@
                         </TabItem>
                     </TabControl>
                 </Border>
-
-
-                <!-- Border Grid.Row="2" Background="#000000" BorderBrush="{StaticResource Black}" BorderThickness="1"
-                        CornerRadius="15" Padding="15">
-                    <Grid RowDefinitions="Auto,Auto,Auto,Auto">
-                        <TextBlock Grid.Row="0" Text="Value Converter" Foreground="White" FontSize="14"
-                                   FontWeight="SemiBold" Margin="0,0,0,5" />
-                        <TextBlock Grid.Row="1" Text="Selected Memory: RAM 0x0000" Foreground="White" FontSize="12"
-                                   Margin="0,0,0,15" Name="SelectedMemoryText" />
-
-                        <Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto,*,Auto,*" Margin="0,0,0,15">
-                            <TextBlock Grid.Column="0" Text="DEC" Foreground="White" VerticalAlignment="Center"
-                                       Margin="0,0,10,0" FontSize="12" FontWeight="SemiBold" />
-                            <Border Grid.Column="1" Background="{StaticResource LightPurple}" Opacity="0.7"
-                                    CornerRadius="5" Padding="5" Height="30">
-                                <TextBlock Name="DecValue" Text="000" Foreground="White" HorizontalAlignment="Center"
-                                           VerticalAlignment="Center" FontSize="12" />
-                            </Border>
-
-                            <TextBlock Grid.Column="2" Text="Oct" Foreground="White" VerticalAlignment="Center"
-                                       Margin="15,0,10,0" FontSize="12" FontWeight="SemiBold" />
-                            <Border Grid.Column="3" Background="{StaticResource LightPurple}" Opacity="0.7"
-                                    CornerRadius="5" Padding="5" Height="30">
-                                <TextBlock Name="OctValue" Text="000" Foreground="White" HorizontalAlignment="Center"
-                                           VerticalAlignment="Center" FontSize="12" />
-                            </Border>
-
-                            <TextBlock Grid.Column="4" Text="SP" Foreground="{StaticResource Turquoise}"
-                                       VerticalAlignment="Center" Margin="15,0,10,0" FontSize="12"
-                                       FontWeight="SemiBold" />
-                            <Border Grid.Column="5" Background="{StaticResource LightPurple}" Opacity="0.7"
-                                    CornerRadius="5" Padding="5" Height="30">
-                                <TextBlock Name="SPValueConverter" Text="000" Foreground="White"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
-                            </Border>
-                        </Grid>
-
-                        <Grid Grid.Row="3" ColumnDefinitions="Auto,*" HorizontalAlignment="Center">
-                            <TextBlock Grid.Column="0" Text="Bin" Foreground="White" VerticalAlignment="Center"
-                                       Margin="0,0,15,0" FontSize="12" FontWeight="SemiBold" />
-                            <Border Grid.Column="1" Background="{StaticResource LightPurple}" Opacity="0.7"
-                                    CornerRadius="5" Padding="10,5" Width="120" Height="30">
-                                <TextBlock Name="BinValue" Text="0000 0000" Foreground="White"
-                                           HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
-                            </Border>
-                        </Grid>
-                    </Grid>
-                </-->
             </Grid>
         </Grid>
     </Grid>

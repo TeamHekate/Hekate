@@ -25,6 +25,7 @@ namespace Frontend.ViewModels
         public ObservableCollection<PeripheralDeviceModel> Devices { get; } = [];
 
         private ushort _ramAddress;
+
         private ushort RamAddress
         {
             get => _ramAddress;
@@ -41,8 +42,9 @@ namespace Frontend.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         private ushort _romAddress;
+
         private ushort RomAddress
         {
             get => _romAddress;
@@ -59,10 +61,10 @@ namespace Frontend.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         [ObservableProperty] private string _ramAddressString = "0000";
         [ObservableProperty] private string _romAddressString = "0000";
-        
+
         public string ProgramCounter => _cpu.Registers.ProgramCounter.ToString("X4");
         public string StackPointer => _cpu.Registers.StackPointer.ToString("X4");
 
@@ -209,6 +211,7 @@ namespace Frontend.ViewModels
                     _worker.RunWorkerAsync();
                 IsRunning = true;
             }
+
             _busy.Reset();
             StepSimulation();
             IsPaused = true;
@@ -342,30 +345,44 @@ namespace Frontend.ViewModels
             {
                 var config = Devices[i];
                 if (!config.IsActive) continue;
-                var address = (ushort) int.Parse(config.StartAddress, NumberStyles.HexNumber);
-                var length = (ushort) int.Parse(config.Length, NumberStyles.HexNumber);
+                var address = (ushort)int.Parse(config.StartAddress, NumberStyles.HexNumber);
+                var length = (ushort)int.Parse(config.Length, NumberStyles.HexNumber);
                 var success = false;
-                try
+                PeripheralDevice? device = null;
+                for (var tries = 0; tries < 11 && !success; tries++)
                 {
-                    var device = new PeripheralDevice(config.PortName);
-                    success = _cpu.Mapper.MapDevice(address, length, device);
+                    try
+                    {
+                        device = new PeripheralDevice(config.PortName);
+                        success = _cpu.Mapper.MapDevice(address, length, device);
+                        device.SetTimeout(200);
+                    }
+                    catch (Exception e)
+                    {
+                        if (tries == 10)
+                        {
+                            MessageBoxManager.GetMessageBoxStandard("I/O Manager Error",
+                                    $"Could not bind memory-mapped I/O at port {config.PortName} after 10 tries:\n\t" +
+                                    e.Message)
+                                .ShowAsync();
+                        }
+                        else
+                        {
+                            Console.Error.WriteLine(
+                                $"Failed to bind memory-mapped I/O, retrying... (Tries: {tries + 1})");
+                        }
+                    }
                 }
-                catch (Exception e)
-                {
-                    MessageBoxManager.GetMessageBoxStandard("I/O Manager Error",
-                        $"Could not bind memory-mapped I/O at port {config.PortName}:\n\t" + e.Message).ShowAsync();
-                    success = false;
-                }
-
-                if (success) continue;
+                
                 Devices[i] = new PeripheralDeviceModel(config.PortName)
                 {
                     StartAddress = config.StartAddress,
                     Length = config.Length,
                     IsActive = success,
                     PortName = config.PortName,
-                    DeviceName = config.DeviceName
+                    DeviceName = device?.DeviceName ?? "-"
                 };
+                
                 OnPropertyChanged(nameof(Devices));
             }
         }
@@ -373,7 +390,13 @@ namespace Frontend.ViewModels
         [RelayCommand]
         private void ClickRamAddress()
         {
-            RamAddress = (ushort) int.Parse(RamAddressString, NumberStyles.HexNumber);
+            RamAddress = (ushort)int.Parse(RamAddressString, NumberStyles.HexNumber);
+        }
+        
+        [RelayCommand]
+        private void ClickRomAddress()
+        {
+            RamAddress = (ushort)int.Parse(RomAddressString, NumberStyles.HexNumber);
         }
     }
 }
