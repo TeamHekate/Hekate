@@ -16,7 +16,7 @@ public static class Generator
         Jump
     }
 
-    private static byte[] _image;
+    private static byte[] _image = [];
     private static ushort _index = 0;
 
     private static readonly Dictionary<byte, InstructionMode> Modes = new()
