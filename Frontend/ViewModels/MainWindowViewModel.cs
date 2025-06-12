@@ -13,6 +13,11 @@ using Frontend.Models;
 using MsBox.Avalonia;
 using Simulator;
 using Simulator.Peripheral;
+using Avalonia;
+using Avalonia.Media;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Avalonia.Styling;
 
 namespace Frontend.ViewModels
 {
@@ -21,8 +26,36 @@ namespace Frontend.ViewModels
         public ObservableCollection<MemoryGridRowModel> RamPage { get; set; } = [];
         public ObservableCollection<MemoryGridRowModel> RomPage { get; set; } = [];
 
-
         public ObservableCollection<PeripheralDeviceModel> Devices { get; } = [];
+
+        // Theme Management Properties using Avalonia's ThemeVariant
+        [ObservableProperty] private bool _isWhiteTheme = false;
+        
+        public string ThemeToggleText => IsWhiteTheme ? "Dark" : "Light";
+        public string CurrentThemeName => IsWhiteTheme ? "Light Theme" : "Dark Theme";
+        
+        // This property controls Avalonia's RequestedThemeVariant
+        public ThemeVariant CurrentThemeVariant => IsWhiteTheme ? ThemeVariant.Light : ThemeVariant.Dark;
+
+        partial void OnIsWhiteThemeChanged(bool value)
+        {
+            Console.WriteLine($"Theme changed to: {(value ? "Light" : "Dark")} Theme");
+            
+            // Notify all theme-related properties to update
+            OnPropertyChanged(nameof(ThemeToggleText));
+            OnPropertyChanged(nameof(CurrentThemeName));
+            OnPropertyChanged(nameof(CurrentThemeVariant));
+            
+            Console.WriteLine($"Theme variant set to: {CurrentThemeVariant}");
+        }
+
+        [RelayCommand]
+        private void ToggleTheme()
+        {
+            Console.WriteLine($"ToggleTheme command called! Current theme: {(IsWhiteTheme ? "Light" : "Dark")}");
+            IsWhiteTheme = !IsWhiteTheme;
+            Console.WriteLine($"Theme toggled to: {(IsWhiteTheme ? "Light" : "Dark")}");
+        }
 
         private ushort _ramAddress;
 
@@ -151,6 +184,8 @@ namespace Frontend.ViewModels
             UpdateRomPage();
             RefreshDevices();
             OnPropertyChanged(nameof(ProgramCounter));
+            
+            Console.WriteLine("MainWindowViewModel constructor completed");
         }
 
         private void StepSimulation()

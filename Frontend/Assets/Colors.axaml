@@ -1,5 +1,49 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- Black Theme Colors -->
+    <SolidColorBrush x:Key="BlackTheme.Background" Color="#1E1433" />
+    <SolidColorBrush x:Key="BlackTheme.Surface" Color="#2D2152" />
+    <SolidColorBrush x:Key="BlackTheme.Primary" Color="#9370DB" />
+    <SolidColorBrush x:Key="BlackTheme.Secondary" Color="#9932CC" />
+    <SolidColorBrush x:Key="BlackTheme.Accent" Color="#FF69B4" />
+    <SolidColorBrush x:Key="BlackTheme.Border" Color="#444444" />
+    <SolidColorBrush x:Key="BlackTheme.Text" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="BlackTheme.TextSecondary" Color="#CCCCCC" />
+    <SolidColorBrush x:Key="BlackTheme.Highlight" Color="#00FFFF" />
+    <SolidColorBrush x:Key="BlackTheme.Button" Color="#3D3160" />
+    <SolidColorBrush x:Key="BlackTheme.TabBackground" Color="#252040" />
+    <SolidColorBrush x:Key="BlackTheme.InputBackground" Color="#1A1A1A" />
+    
+    <!-- White Theme Colors -->
+    <SolidColorBrush x:Key="WhiteTheme.Background" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="WhiteTheme.Surface" Color="#F8F9FA" />
+    <SolidColorBrush x:Key="WhiteTheme.Primary" Color="#6A5ACD" />
+    <SolidColorBrush x:Key="WhiteTheme.Secondary" Color="#483D8B" />
+    <SolidColorBrush x:Key="WhiteTheme.Accent" Color="#DC143C" />
+    <SolidColorBrush x:Key="WhiteTheme.Border" Color="#D1D5DB" />
+    <SolidColorBrush x:Key="WhiteTheme.Text" Color="#1F2937" />
+    <SolidColorBrush x:Key="WhiteTheme.TextSecondary" Color="#6B7280" />
+    <SolidColorBrush x:Key="WhiteTheme.Highlight" Color="#2563EB" />
+    <SolidColorBrush x:Key="WhiteTheme.Button" Color="#F3F4F6" />
+    <SolidColorBrush x:Key="WhiteTheme.TabBackground" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="WhiteTheme.InputBackground" Color="#FFFFFF" />
+    
+    <!-- Dynamic Theme Colors (Default to Black Theme) -->
+    <SolidColorBrush x:Key="Theme.Background" Color="#1E1433" />
+    <SolidColorBrush x:Key="Theme.Surface" Color="#2D2152" />
+    <SolidColorBrush x:Key="Theme.Primary" Color="#9370DB" />
+    <SolidColorBrush x:Key="Theme.Secondary" Color="#9932CC" />
+    <SolidColorBrush x:Key="Theme.Accent" Color="#FF69B4" />
+    <SolidColorBrush x:Key="Theme.Border" Color="#444444" />
+    <SolidColorBrush x:Key="Theme.Text" Color="#FFFFFF" />
+    <SolidColorBrush x:Key="Theme.TextSecondary" Color="#CCCCCC" />
+    <SolidColorBrush x:Key="Theme.Highlight" Color="#00FFFF" />
+    <SolidColorBrush x:Key="Theme.Button" Color="#3D3160" />
+    <SolidColorBrush x:Key="Theme.TabBackground" Color="#252040" />
+    <SolidColorBrush x:Key="Theme.InputBackground" Color="#1A1A1A" />
+    
+    <!-- Legacy Color Names (for backward compatibility) -->
     <SolidColorBrush x:Key="LightPurple" Color="#9370DB" />
     <SolidColorBrush x:Key="Purple" Color="#9932CC" />
     <SolidColorBrush x:Key="DarkPurple" Color="#2D2152" />

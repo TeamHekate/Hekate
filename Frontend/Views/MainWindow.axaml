@@ -9,17 +9,120 @@
         x:Class="Frontend.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="HEKATE"
-        Background="#1E1433"
+        RequestedThemeVariant="{Binding CurrentThemeVariant}"
+        Background="{DynamicResource ThemeBackgroundBrush}"
         WindowStartupLocation="CenterScreen"
         MinWidth="1200" MinHeight="800"
         Icon="/Assets/HekateLogo.png">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <!-- Light Theme Dictionary -->
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#F8F9FA</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeSurfaceBrush">#F1F3F4</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryBrush">#4285F4</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeSecondaryBrush">#1A73E8</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeAccentBrush">#EA4335</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBorderBrush">#DADCE0</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextBrush">#202124</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#5F6368</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeHighlightBrush">#4285F4</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeButtonBrush">#F8F9FA</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTabBackgroundBrush">#FFFFFF</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeInputBackgroundBrush">#FFFFFF</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeCodeBackgroundBrush">#FAFBFC</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeCodeTextBrush">#202124</SolidColorBrush>
+                </ResourceDictionary>
+                
+                <!-- Dark Theme Dictionary -->
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="ThemeBackgroundBrush">#1E1433</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeSurfaceBrush">#2D2152</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemePrimaryBrush">#9370DB</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeSecondaryBrush">#9932CC</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeAccentBrush">#FF69B4</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeBorderBrush">#6A5ACD</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextBrush">#FFFFFF</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTextSecondaryBrush">#CCCCCC</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeHighlightBrush">#9370DB</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeButtonBrush">#3D3160</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeTabBackgroundBrush">#252040</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeInputBackgroundBrush">#1A1A1A</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeCodeBackgroundBrush">#2D2152</SolidColorBrush>
+                    <SolidColorBrush x:Key="ThemeCodeTextBrush">#CCCCCC</SolidColorBrush>
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Window.Styles>
+        <!-- Global Styles that use DynamicResource -->
+        <Style Selector="TabControl">
+            <Setter Property="Background" Value="{DynamicResource ThemeTabBackgroundBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="6" />
+        </Style>
+        
+        <Style Selector="TabItem">
+            <Setter Property="Background" Value="{DynamicResource ThemeSurfaceBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="Padding" Value="12,6" />
+            <Setter Property="Margin" Value="0,0,1,0" />
+            <Setter Property="CornerRadius" Value="4,4,0,0" />
+        </Style>
+        
+        <Style Selector="TabItem:selected">
+            <Setter Property="Background" Value="{DynamicResource ThemePrimaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+        </Style>
+        
+        <Style Selector="TabItem:pointerover">
+            <Setter Property="Background" Value="{DynamicResource ThemeSecondaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+        </Style>
+        
+        <Style Selector="TextBox">
+            <Setter Property="Background" Value="{DynamicResource ThemeInputBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="4" />
+            <Setter Property="Padding" Value="8,6" />
+        </Style>
+        
+        <Style Selector="CheckBox">
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+        </Style>
+        
+        <Style Selector="Button">
+            <Setter Property="Background" Value="{DynamicResource ThemeButtonBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource ThemeBorderBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="4" />
+        </Style>
+        
+        <Style Selector="Button:pointerover">
+            <Setter Property="Background" Value="{DynamicResource ThemeSecondaryBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ThemeTextBrush}" />
+        </Style>
+        
+        <Style Selector="TabControl > ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ThemeTabBackgroundBrush}" />
+        </Style>
+    </Window.Styles>
 
     <Window.DataTemplates>
         <DataTemplate DataType="{x:Type models:MemoryGridRowModel}">
             <Grid ColumnDefinitions="Auto,*">
                 <TextBlock Text="{Binding HighNibble}" FontFamily="{StaticResource DraftingFont}"
                            HorizontalAlignment="Right"
-                           VerticalAlignment="Center" Padding="5" FontWeight="Light" FontSize="15" />
+                           VerticalAlignment="Center" Padding="5" FontWeight="Light" FontSize="15" 
+                           Foreground="{DynamicResource ThemeTextBrush}" />
                 <ItemsControl Grid.Column="1" ItemsSource="{Binding Locations}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -28,10 +131,12 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border BorderBrush="{StaticResource DarkPurple}" BorderThickness="2">
+                            <Border BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" 
+                                    Background="{DynamicResource ThemeSurfaceBrush}">
                                 <TextBlock Text="{Binding}" FontFamily="{StaticResource DraftingFont}"
                                            HorizontalAlignment="Center"
-                                           VerticalAlignment="Center" Padding="5">
+                                           VerticalAlignment="Center" Padding="3"
+                                           Foreground="{DynamicResource ThemeTextBrush}">
                                 </TextBlock>
                             </Border>
                         </DataTemplate>
@@ -40,21 +145,26 @@
             </Grid>
         </DataTemplate>
         <DataTemplate DataType="{x:Type models:PeripheralDeviceModel}">
-            <Border BorderBrush="{StaticResource DarkPurple}" BorderThickness="1" CornerRadius="5"
+            <Border BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1" CornerRadius="5"
+                    Background="{DynamicResource ThemeSurfaceBrush}" Padding="5"
                     HorizontalAlignment="Stretch">
                 <Grid ColumnDefinitions="*,Auto,Auto,Auto,Auto,Auto,*" HorizontalAlignment="Stretch">
                     <TextBlock Grid.Column="0" Text="{Binding PortName}" Margin="2.5,2.5,5,2.5"
-                               VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                               VerticalAlignment="Center" HorizontalAlignment="Right" 
+                               Foreground="{DynamicResource ThemeTextBrush}"/>
                     <CheckBox Grid.Column="1" IsChecked="{Binding IsActive, Mode=TwoWay}" Margin="0,2.5,5,2.5"
                               VerticalAlignment="Center" />
-                    <TextBlock Grid.Column="2" Text="Address" Margin="0,2.5,5,2.5" VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="2" Text="Address" Margin="0,2.5,5,2.5" VerticalAlignment="Center" 
+                               Foreground="{DynamicResource ThemeTextBrush}" />
                     <cc:HexTextBox Grid.Column="3" Text="{Binding StartAddress}" Margin="0,2.5,5,2.5"
                                    VerticalAlignment="Center" />
-                    <TextBlock Grid.Column="4" Text="Length" Margin="0,2.5,5,2.5" VerticalAlignment="Center" />
+                    <TextBlock Grid.Column="4" Text="Length" Margin="0,2.5,5,2.5" VerticalAlignment="Center" 
+                               Foreground="{DynamicResource ThemeTextBrush}" />
                     <cc:HexTextBox Grid.Column="5" Text="{Binding Length}" Margin="0,2.5,5,2.5"
                                    VerticalAlignment="Center" />
                     <TextBlock Grid.Column="6" Text="{Binding DeviceName}" Margin="2.5,2.5,5,2.5"
-                               VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                               VerticalAlignment="Center" HorizontalAlignment="Left" 
+                               Foreground="{DynamicResource ThemeTextBrush}"/>
                 </Grid>
             </Border>
         </DataTemplate>
@@ -65,19 +175,21 @@
     </Design.DataContext>
 
     <Grid RowDefinitions="Auto,*">
-        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="20,15,20,15">
+        <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto,Auto" Margin="20,15,20,15">
             <!-- Buttons -->
             <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="5">
-                <Button Content="COMPILE" Background="{StaticResource DarkPurple}"
-                        Foreground="White"
+                <Button Content="COMPILE" Background="{DynamicResource ThemeButtonBrush}"
+                        Foreground="{DynamicResource ThemeTextBrush}"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
                         Command="{Binding ClickCompileCommand}"
                         IsEnabled="{Binding !IsRunning}" />
-                <Button Name="ResetButton" Content="RESET" Background="{StaticResource DarkPurple}" Foreground="White"
+                <Button Name="ResetButton" Content="RESET" Background="{DynamicResource ThemeButtonBrush}" 
+                        Foreground="{DynamicResource ThemeTextBrush}"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
                         Command="{Binding ClickResetCommand}"
                         IsEnabled="{Binding !IsRunning}" />
-                <Button Name="StepButton" Content="STEP" Background="{StaticResource DarkPurple}" Foreground="White"
+                <Button Name="StepButton" Content="STEP" Background="{DynamicResource ThemeButtonBrush}" 
+                        Foreground="{DynamicResource ThemeTextBrush}"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
                         Command="{Binding ClickStepCommand}">
                     <Button.IsEnabled>
@@ -90,12 +202,13 @@
                         </MultiBinding>
                     </Button.IsEnabled>
                 </Button>
-                <Button Name="RunButton" Content="RUN" Background="{StaticResource DarkPurple}" Foreground="White"
+                <Button Name="RunButton" Content="RUN" Background="{DynamicResource ThemeButtonBrush}" 
+                        Foreground="{DynamicResource ThemeTextBrush}"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
                         Command="{Binding ClickRunCommand}"
                         IsEnabled="{Binding !IsRunning}" />
-                <Button Name="ContinueButton" Content="CONTINUE" Background="{StaticResource DarkPurple}"
-                        Foreground="White"
+                <Button Name="ContinueButton" Content="CONTINUE" Background="{DynamicResource ThemeButtonBrush}"
+                        Foreground="{DynamicResource ThemeTextBrush}"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
                         Command="{Binding ClickContinueCommand}">
                     <Button.IsEnabled>
@@ -105,7 +218,8 @@
                         </MultiBinding>
                     </Button.IsEnabled>
                 </Button>
-                <Button Name="PauseButton" Content="PAUSE" Background="{StaticResource DarkPurple}" Foreground="White"
+                <Button Name="PauseButton" Content="PAUSE" Background="{DynamicResource ThemeButtonBrush}" 
+                        Foreground="{DynamicResource ThemeTextBrush}"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
                         Command="{Binding ClickPauseCommand}">
                     <Button.IsEnabled>
@@ -115,31 +229,45 @@
                         </MultiBinding>
                     </Button.IsEnabled>
                 </Button>
-                <Button Name="StopButton" Content="STOP" Background="{StaticResource DarkPurple}" Foreground="White"
+                <Button Name="StopButton" Content="STOP" Background="{DynamicResource ThemeButtonBrush}" 
+                        Foreground="{DynamicResource ThemeTextBrush}"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold"
                         Command="{Binding ClickStopCommand}"
                         IsEnabled="{Binding IsRunning}" />
-                <Button Name="OpenButton" Content="OPEN" Background="{StaticResource DarkPurple}" Foreground="White"
+                <Button Name="OpenButton" Content="OPEN" Background="{DynamicResource ThemeButtonBrush}" 
+                        Foreground="{DynamicResource ThemeTextBrush}"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold" />
-                <Button Name="SaveButton" Content="SAVE" Background="{StaticResource DarkPurple}" Foreground="White"
+                <Button Name="SaveButton" Content="SAVE" Background="{DynamicResource ThemeButtonBrush}" 
+                        Foreground="{DynamicResource ThemeTextBrush}"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold" />
-                <Button Name="ExportButton" Content="EXPORT" Background="{StaticResource DarkPurple}"
-                        Foreground="White"
+                <Button Name="ExportButton" Content="EXPORT" Background="{DynamicResource ThemeButtonBrush}"
+                        Foreground="{DynamicResource ThemeTextBrush}"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold" />
-                <Button Name="ImportButton" Content="IMPORT" Background="{StaticResource DarkPurple}"
-                        Foreground="White"
+                <Button Name="ImportButton" Content="IMPORT" Background="{DynamicResource ThemeButtonBrush}"
+                        Foreground="{DynamicResource ThemeTextBrush}"
                         Padding="12,5" CornerRadius="3" FontSize="11" FontWeight="SemiBold" />
 
             </StackPanel>
 
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <TextBlock Text="HE" Foreground="{StaticResource White}" FontSize="20" FontWeight="Bold"
+            <!-- Theme Toggle Button -->
+            <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="10">
+                <Button Content="{Binding ThemeToggleText}" 
+                        Background="{DynamicResource ThemeAccentBrush}"
+                        Foreground="{DynamicResource ThemeTextBrush}"
+                        Padding="15,5" CornerRadius="15" FontSize="11" FontWeight="SemiBold"
+                        Command="{Binding ToggleThemeCommand}" 
+                        ToolTip.Tip="Switch to Light/Dark theme" />
+            </StackPanel>
+
+            <!-- Logo -->
+            <StackPanel Grid.Column="3" Orientation="Horizontal" Margin="30,0,0,0">
+                <TextBlock Text="HE" Foreground="{DynamicResource ThemeTextBrush}" FontSize="20" FontWeight="Bold"
                            VerticalAlignment="Center" />
-                <Border CornerRadius="50" Background="{StaticResource Pink}" Width="24" Height="24" Margin="2,0">
-                    <TextBlock Text="K" Foreground="{StaticResource White}" FontSize="16" FontWeight="Bold"
+                <Border CornerRadius="50" Background="{DynamicResource ThemeAccentBrush}" Width="24" Height="24" Margin="2,0">
+                    <TextBlock Text="K" Foreground="{DynamicResource ThemeTextBrush}" FontSize="16" FontWeight="Bold"
                                HorizontalAlignment="Center" VerticalAlignment="Center" />
                 </Border>
-                <TextBlock Text="ATE" Foreground="{StaticResource White}" FontSize="20" FontWeight="Bold"
+                <TextBlock Text="ATE" Foreground="{DynamicResource ThemeTextBrush}" FontSize="20" FontWeight="Bold"
                            VerticalAlignment="Center" />
             </StackPanel>
         </Grid>
@@ -149,13 +277,13 @@
             <!-- Left Panel -->
             <Grid Grid.Column="0" RowDefinitions="*,Auto,Auto,Auto,Auto">
 
-                <Border Grid.Row="0" BorderBrush="{StaticResource Black}" BorderThickness="1"
-                        Background="{StaticResource DarkBlack}" Margin="0,0,0,15">
+                <Border Grid.Row="0" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="1"
+                        Background="{DynamicResource ThemeCodeBackgroundBrush}" Margin="0,0,0,15">
                     <cc:CodeEditorBox Name="CodeEditor"
                                       AcceptsTab="True"
                                       AcceptsReturn="True"
                                       Background="Transparent"
-                                      Foreground="{StaticResource Gray}"
+                                      Foreground="{DynamicResource ThemeCodeTextBrush}"
                                       FontFamily="{StaticResource DraftingFont}"
                                       FontSize="16"
                                       Text="{Binding CurrentProgram}"
@@ -165,27 +293,27 @@
                 </Border>
 
                 <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,*,Auto,*" Margin="0,0,0,15">
-                    <TextBlock Grid.Column="0" Text="PC" Foreground="White" VerticalAlignment="Center" Margin="0,0,5,0"
+                    <TextBlock Grid.Column="0" Text="PC" Foreground="{DynamicResource ThemeTextBrush}" VerticalAlignment="Center" Margin="0,0,5,0"
                                FontSize="12" FontWeight="SemiBold" />
-                    <Border Grid.Column="1" Background="{StaticResource LightPurple}" Opacity="0.7" CornerRadius="3"
+                    <Border Grid.Column="1" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7" CornerRadius="3"
                             Padding="5" Height="30">
-                        <TextBlock Name="PCValue" Text="{Binding ProgramCounter}" Foreground="White"
+                        <TextBlock Name="PCValue" Text="{Binding ProgramCounter}" Foreground="{DynamicResource ThemeTextBrush}"
                                    HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                     </Border>
 
-                    <TextBlock Grid.Column="2" Text="IR" Foreground="White" VerticalAlignment="Center"
+                    <TextBlock Grid.Column="2" Text="IR" Foreground="{DynamicResource ThemeTextBrush}" VerticalAlignment="Center"
                                Margin="15,0,5,0" FontSize="12" FontWeight="SemiBold" />
-                    <Border Grid.Column="3" Background="{StaticResource LightPurple}" Opacity="0.7" CornerRadius="3"
+                    <Border Grid.Column="3" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7" CornerRadius="3"
                             Padding="5" Height="30">
-                        <TextBlock Name="IRValue" Text="0000" Foreground="White" HorizontalAlignment="Center"
+                        <TextBlock Name="IRValue" Text="0000" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                    VerticalAlignment="Center" FontSize="12" />
                     </Border>
 
-                    <TextBlock Grid.Column="4" Text="SP" Foreground="{StaticResource Turquoise}"
+                    <TextBlock Grid.Column="4" Text="SP" Foreground="{DynamicResource ThemeHighlightBrush}"
                                VerticalAlignment="Center" Margin="15,0,5,0" FontSize="12" FontWeight="SemiBold" />
-                    <Border Grid.Column="5" Background="{StaticResource LightPurple}" Opacity="0.7" CornerRadius="3"
+                    <Border Grid.Column="5" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7" CornerRadius="3"
                             Padding="5" Height="30">
-                        <TextBlock Name="SPValue" Text="{Binding StackPointer}" Foreground="White"
+                        <TextBlock Name="SPValue" Text="{Binding StackPointer}" Foreground="{DynamicResource ThemeTextBrush}"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center" FontSize="12" />
                     </Border>
@@ -194,77 +322,77 @@
 
                 <Grid Grid.Row="2" Margin="0,0,0,15">
                     <Grid ColumnDefinitions="Auto,*">
-                        <Border Grid.Column="0" Background="{StaticResource LightPurple}" Opacity="0.7" Width="30"
+                        <Border Grid.Column="0" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7" Width="30"
                                 Height="30">
-                            <TextBlock Text="FR" Foreground="White" HorizontalAlignment="Center"
+                            <TextBlock Text="FR" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                        VerticalAlignment="Center" FontSize="12" FontWeight="SemiBold" />
                         </Border>
 
                         <Grid Grid.Column="1" RowDefinitions="Auto,Auto">
                             <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*,*,*,*,*">
-                                <TextBlock Grid.Column="0" Text="ZF" Foreground="White" HorizontalAlignment="Center"
+                                <TextBlock Grid.Column="0" Text="ZF" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                            FontSize="11" FontWeight="SemiBold" />
-                                <TextBlock Grid.Column="1" Text="CF" Foreground="White" HorizontalAlignment="Center"
+                                <TextBlock Grid.Column="1" Text="CF" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                            FontSize="11" FontWeight="SemiBold" />
-                                <TextBlock Grid.Column="2" Text="SF" Foreground="White" HorizontalAlignment="Center"
+                                <TextBlock Grid.Column="2" Text="SF" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                            FontSize="11" FontWeight="SemiBold" />
-                                <TextBlock Grid.Column="3" Text="OF" Foreground="White" HorizontalAlignment="Center"
+                                <TextBlock Grid.Column="3" Text="OF" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                            FontSize="11" FontWeight="SemiBold" />
-                                <TextBlock Grid.Column="4" Text="HF" Foreground="White" HorizontalAlignment="Center"
+                                <TextBlock Grid.Column="4" Text="HF" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                            FontSize="11" FontWeight="SemiBold" />
-                                <TextBlock Grid.Column="5" Text="-" Foreground="White" HorizontalAlignment="Center"
+                                <TextBlock Grid.Column="5" Text="-" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                            FontSize="11" FontWeight="SemiBold" />
-                                <TextBlock Grid.Column="6" Text="-" Foreground="White" HorizontalAlignment="Center"
+                                <TextBlock Grid.Column="6" Text="-" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                            FontSize="11" FontWeight="SemiBold" />
-                                <TextBlock Grid.Column="7" Text="-" Foreground="White" HorizontalAlignment="Center"
+                                <TextBlock Grid.Column="7" Text="-" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                            FontSize="11" FontWeight="SemiBold" />
                             </Grid>
 
 
                             <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*,*,*,*">
-                                <Border Grid.Column="0" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="0" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag0" Text="{Binding Flags[0]}" Foreground="White"
+                                    <TextBlock Name="Flag0" Text="{Binding Flags[0]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="1" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="1" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag1" Text="{Binding Flags[1]}" Foreground="White"
+                                    <TextBlock Name="Flag1" Text="{Binding Flags[1]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="2" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="2" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag2" Text="{Binding Flags[2]}" Foreground="White"
+                                    <TextBlock Name="Flag2" Text="{Binding Flags[2]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="3" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="3" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag3" Text="{Binding Flags[3]}" Foreground="White"
+                                    <TextBlock Name="Flag3" Text="{Binding Flags[3]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="4" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="4" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag4" Text="{Binding Flags[4]}" Foreground="White"
+                                    <TextBlock Name="Flag4" Text="{Binding Flags[4]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="5" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="5" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag5" Text="0" Foreground="White" HorizontalAlignment="Center"
+                                    <TextBlock Name="Flag5" Text="0" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="6" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="6" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag6" Text="0" Foreground="White" HorizontalAlignment="Center"
+                                    <TextBlock Name="Flag6" Text="0" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="7" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="7" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="1,0,1,0">
-                                    <TextBlock Name="Flag7" Text="0" Foreground="White" HorizontalAlignment="Center"
+                                    <TextBlock Name="Flag7" Text="0" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                                VerticalAlignment="Center" FontSize="12" />
                                 </Border>
                             </Grid>
@@ -274,53 +402,53 @@
 
                 <Grid Grid.Row="3" RowDefinitions="Auto,Auto" Margin="0,0,0,15">
 
-                    <TextBlock Grid.Row="0" Text="Registers" Foreground="White" FontSize="14" FontWeight="SemiBold"
+                    <TextBlock Grid.Row="0" Text="Registers" Foreground="{DynamicResource ThemeTextBrush}" FontSize="14" FontWeight="SemiBold"
                                Margin="0,0,0,5" />
 
                     <Grid Grid.Row="1" RowDefinitions="Auto,Auto">
 
                         <Grid Grid.Row="0" ColumnDefinitions="Auto,*">
-                            <TextBlock Grid.Column="0" Text="R0-R7" Foreground="White" VerticalAlignment="Center"
+                            <TextBlock Grid.Column="0" Text="R0-R7" Foreground="{DynamicResource ThemeTextBrush}" VerticalAlignment="Center"
                                        Margin="0,0,5,0" FontSize="12" FontWeight="SemiBold" />
                             <Grid Grid.Column="1" ColumnDefinitions="*,*,*,*,*,*,*,*">
-                                <Border Grid.Column="0" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="0" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="R0Value" Text="{Binding Registers[0]}" Foreground="White"
+                                    <TextBlock Name="R0Value" Text="{Binding Registers[0]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="1" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="1" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="R1Value" Text="{Binding Registers[1]}" Foreground="White"
+                                    <TextBlock Name="R1Value" Text="{Binding Registers[1]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="2" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="2" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="R2Value" Text="{Binding Registers[2]}" Foreground="White"
+                                    <TextBlock Name="R2Value" Text="{Binding Registers[2]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="3" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="3" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="R3Value" Text="{Binding Registers[3]}" Foreground="White"
+                                    <TextBlock Name="R3Value" Text="{Binding Registers[3]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="4" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="4" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="R4Value" Text="{Binding Registers[4]}" Foreground="White"
+                                    <TextBlock Name="R4Value" Text="{Binding Registers[4]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="5" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="5" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="R5Value" Text="{Binding Registers[5]}" Foreground="White"
+                                    <TextBlock Name="R5Value" Text="{Binding Registers[5]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="6" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="6" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="R6Value" Text="{Binding Registers[6]}" Foreground="White"
+                                    <TextBlock Name="R6Value" Text="{Binding Registers[6]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="7" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="7" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="R7Value" Text="{Binding Registers[7]}" Foreground="White"
+                                    <TextBlock Name="R7Value" Text="{Binding Registers[7]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
                             </Grid>
@@ -328,47 +456,47 @@
 
 
                         <Grid Grid.Row="1" ColumnDefinitions="Auto,*" Margin="0,5,0,0">
-                            <TextBlock Grid.Column="0" Text="R8-RF" Foreground="White" VerticalAlignment="Center"
+                            <TextBlock Grid.Column="0" Text="R8-RF" Foreground="{DynamicResource ThemeTextBrush}" VerticalAlignment="Center"
                                        Margin="0,0,5,0" FontSize="12" FontWeight="SemiBold" />
                             <Grid Grid.Column="1" ColumnDefinitions="*,*,*,*,*,*,*,*">
-                                <Border Grid.Column="0" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="0" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="R8Value" Text="{Binding Registers[8]}" Foreground="White"
+                                    <TextBlock Name="R8Value" Text="{Binding Registers[8]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="1" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="1" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="R9Value" Text="{Binding Registers[9]}" Foreground="White"
+                                    <TextBlock Name="R9Value" Text="{Binding Registers[9]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="2" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="2" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="RaValue" Text="{Binding Registers[10]}" Foreground="White"
+                                    <TextBlock Name="RaValue" Text="{Binding Registers[10]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="3" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="3" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="RbValue" Text="{Binding Registers[11]}" Foreground="White"
+                                    <TextBlock Name="RbValue" Text="{Binding Registers[11]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="4" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="4" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="RcValue" Text="{Binding Registers[12]}" Foreground="White"
+                                    <TextBlock Name="RcValue" Text="{Binding Registers[12]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="5" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="5" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="RdValue" Text="{Binding Registers[13]}" Foreground="White"
+                                    <TextBlock Name="RdValue" Text="{Binding Registers[13]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="6" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="6" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="ReValue" Text="{Binding Registers[14]}" Foreground="White"
+                                    <TextBlock Name="ReValue" Text="{Binding Registers[14]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
-                                <Border Grid.Column="7" Background="{StaticResource LightPurple}" Opacity="0.7"
+                                <Border Grid.Column="7" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7"
                                         Height="30" Margin="2">
-                                    <TextBlock Name="RfValue" Text="{Binding Registers[15]}" Foreground="White"
+                                    <TextBlock Name="RfValue" Text="{Binding Registers[15]}" Foreground="{DynamicResource ThemeTextBrush}"
                                                HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="12" />
                                 </Border>
                             </Grid>
@@ -379,17 +507,17 @@
 
                 <Grid Grid.Row="4">
                     <StackPanel HorizontalAlignment="Right">
-                        <TextBlock Text="System Clock Frequency" Foreground="White" HorizontalAlignment="Right"
+                        <TextBlock Text="System Clock Frequency" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Right"
                                    Margin="0,0,0,5"
                                    FontSize="12" FontWeight="SemiBold" />
 
-                        <Border Background="{StaticResource LightPurple}" Opacity="0.7" CornerRadius="20" Height="35"
+                        <Border Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7" CornerRadius="20" Height="35"
                                 Width="150">
                             <Grid>
-                                <TextBlock Text="0000" Foreground="White" HorizontalAlignment="Center"
+                                <TextBlock Text="0000" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                            VerticalAlignment="Center"
                                            FontSize="14" Margin="0,0,15,0" />
-                                <Path Data="M 0,0 L 6,6 L 12,0" Stroke="White" StrokeThickness="2"
+                                <Path Data="M 0,0 L 6,6 L 12,0" Stroke="{DynamicResource ThemeTextBrush}" StrokeThickness="2"
                                       HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0" />
                             </Grid>
                         </Border>
@@ -399,67 +527,87 @@
 
             <Grid Grid.Column="1" Width="20" />
             <Grid Grid.Column="2" RowDefinitions="Auto,*,Auto">
-                <Border Grid.Row="1" BorderBrush="{StaticResource Purple}" BorderThickness="2" CornerRadius="20"
+                <Border Grid.Row="1" BorderBrush="{DynamicResource ThemeBorderBrush}" BorderThickness="2" CornerRadius="20"
+                        Background="{DynamicResource ThemeTabBackgroundBrush}"
                         Margin="0,0,0,15">
-                    <TabControl>
-                        <TabItem Header="RAM">
-                            <Grid VerticalAlignment="Stretch" RowDefinitions="Auto, Auto">
-                                <ItemsControl ItemsSource="{Binding RamPage}" Margin="10"/>
+                    <TabControl Background="{DynamicResource ThemeTabBackgroundBrush}">
+                        <TabItem Header="RAM" Background="{DynamicResource ThemeSurfaceBrush}" 
+                                 Foreground="{DynamicResource ThemeTextBrush}">
+                            <Grid VerticalAlignment="Stretch" RowDefinitions="Auto, Auto" 
+                                  Background="{DynamicResource ThemeTabBackgroundBrush}">
+                                <ItemsControl ItemsSource="{Binding RamPage}" Margin="10" 
+                                              Background="{DynamicResource ThemeTabBackgroundBrush}"/>
                                 <!-- Go to RAM Address Box/-->
-                                <Border Grid.Row="1" VerticalAlignment="Stretch" BorderBrush="{StaticResource Purple}"
-                                        BorderThickness="1" CornerRadius="10" Margin="10">
+                                <Border Grid.Row="1" VerticalAlignment="Stretch" BorderBrush="{DynamicResource ThemeBorderBrush}"
+                                        BorderThickness="1" CornerRadius="10" Margin="10" 
+                                        Background="{DynamicResource ThemeSurfaceBrush}">
                                     <Grid ColumnDefinitions="Auto, Auto, Auto" VerticalAlignment="Top"
                                           HorizontalAlignment="Center">
                                         <TextBlock Grid.RowSpan="4" Grid.Column="0" Text="Go to RAM Address:"
-                                                   VerticalAlignment="Center" Margin="5" />
+                                                   VerticalAlignment="Center" Margin="5" Foreground="{DynamicResource ThemeTextBrush}" />
                                         <cc:HexTextBox Grid.Column="1" Text="{Binding RamAddressString}" Margin="5" />
                                         <Button Grid.Column="2" Content="Go!" Margin="5"
+                                                Background="{DynamicResource ThemeButtonBrush}" Foreground="{DynamicResource ThemeTextBrush}"
                                                 Command="{Binding ClickRamAddressCommand}" />
                                     </Grid>
                                 </Border>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="ROM">
-                            <Grid VerticalAlignment="Stretch" RowDefinitions="Auto, Auto">
-                                <ItemsControl ItemsSource="{Binding RomPage}" Margin="10"/>
+                        <TabItem Header="ROM" Background="{DynamicResource ThemeSurfaceBrush}" 
+                                 Foreground="{DynamicResource ThemeTextBrush}">
+                            <Grid VerticalAlignment="Stretch" RowDefinitions="Auto, Auto" 
+                                  Background="{DynamicResource ThemeTabBackgroundBrush}">
+                                <ItemsControl ItemsSource="{Binding RomPage}" Margin="10" 
+                                              Background="{DynamicResource ThemeTabBackgroundBrush}"/>
                                 <!-- Go to ROM Address Box/-->
-                                <Border Grid.Row="1" VerticalAlignment="Stretch" BorderBrush="{StaticResource Purple}"
-                                        BorderThickness="1" CornerRadius="10" Margin="10">
+                                <Border Grid.Row="1" VerticalAlignment="Stretch" BorderBrush="{DynamicResource ThemeBorderBrush}"
+                                        BorderThickness="1" CornerRadius="10" Margin="10" 
+                                        Background="{DynamicResource ThemeSurfaceBrush}">
                                     <Grid ColumnDefinitions="Auto, Auto, Auto" VerticalAlignment="Top"
                                           HorizontalAlignment="Center">
                                         <TextBlock Grid.RowSpan="4" Grid.Column="0" Text="Go to ROM Address:"
-                                                   VerticalAlignment="Center" Margin="5" />
+                                                   VerticalAlignment="Center" Margin="5" Foreground="{DynamicResource ThemeTextBrush}" />
                                         <cc:HexTextBox Grid.Column="1" Text="{Binding RomAddressString}" Margin="5" />
                                         <Button Grid.Column="2" Content="Go!" Margin="5"
+                                                Background="{DynamicResource ThemeButtonBrush}" Foreground="{DynamicResource ThemeTextBrush}"
                                                 Command="{Binding ClickRomAddressCommand}" />
                                     </Grid>
                                 </Border>
                             </Grid>
                         </TabItem>
-                        <TabItem Header="Instruction Sheet">
-                            <TextBlock> To Be Implemented. </TextBlock>
+                        <TabItem Header="Instruction Sheet" Background="{DynamicResource ThemeSurfaceBrush}" 
+                                 Foreground="{DynamicResource ThemeTextBrush}">
+                            <Grid Background="{DynamicResource ThemeTabBackgroundBrush}" Margin="10">
+                                <TextBlock Text="To Be Implemented." Foreground="{DynamicResource ThemeTextBrush}" 
+                                           HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="14" />
+                            </Grid>
                         </TabItem>
-                        <TabItem Header="I/O Mapper">
+                        <TabItem Header="I/O Mapper" Background="{DynamicResource ThemeSurfaceBrush}" 
+                                 Foreground="{DynamicResource ThemeTextBrush}">
                             <Grid RowDefinitions="Auto, *" ColumnDefinitions="*,*" HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch">
+                                  VerticalAlignment="Stretch" Background="{DynamicResource ThemeTabBackgroundBrush}" Margin="10">
                                 <Button Grid.Row="0" Grid.Column="0" Content="Refresh"
+                                        Background="{DynamicResource ThemeButtonBrush}" Foreground="{DynamicResource ThemeTextBrush}"
                                         Command="{Binding RefreshDevicesCommand}"
                                         HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                         HorizontalContentAlignment="Center"
                                         Margin="5" IsEnabled="{Binding !IsRunning}" />
                                 <Button Grid.Row="0" Grid.Column="1" Content="Apply Changes"
+                                        Background="{DynamicResource ThemeButtonBrush}" Foreground="{DynamicResource ThemeTextBrush}"
                                         Command="{Binding ApplyDevicesCommand}"
                                         HorizontalAlignment="Stretch" VerticalAlignment="Center"
                                         HorizontalContentAlignment="Center"
                                         Margin="5" IsEnabled="{Binding !IsRunning}" />
-                                <ItemsControl Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1"
-                                              ItemsSource="{Binding Devices}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Vertical" Spacing="10" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </ItemsControl>
+                                <ScrollViewer Grid.ColumnSpan="2" Grid.Column="0" Grid.Row="1" 
+                                              Background="{DynamicResource ThemeTabBackgroundBrush}" Margin="5">
+                                    <ItemsControl ItemsSource="{Binding Devices}">
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <StackPanel Orientation="Vertical" Spacing="10" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </ScrollViewer>
                             </Grid>
                         </TabItem>
                     </TabControl>
