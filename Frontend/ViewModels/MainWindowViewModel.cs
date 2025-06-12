@@ -17,6 +17,8 @@ using Avalonia;
 using Avalonia.Media;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Platform.Storage;
 using Avalonia.Styling;
 
 namespace Frontend.ViewModels
@@ -110,7 +112,7 @@ namespace Frontend.ViewModels
             _cpu.Registers.HaltFlag ? "1" : "0"
         ];
 
-        public string CurrentProgram { get; set; } = "";
+        [ObservableProperty] private string _currentProgram = "";
 
         private ExecutionResult? LastExecutionResult { get; set; }
         private readonly HekateInstance _cpu = new();
@@ -151,7 +153,7 @@ namespace Frontend.ViewModels
             for (var i = 0; i < 16; i++) Registers.Add(_cpu.Registers[i].ToString("X2"));
         }
 
-        private void UpdateRamPage()
+        public void UpdateRamPage()
         {
             RamPage.Clear();
             var page = _cpu.GetRamPage((byte)(RamAddress >> 8)).ToArray();
@@ -175,6 +177,12 @@ namespace Frontend.ViewModels
                         .ToArray().Select(e => e.ToString("X2")).ToArray()
                 ));
             OnPropertyChanged(nameof(RomPage));
+        }
+
+        public byte[] GetRamImage() => _cpu.DumpRam();
+        public void SetRamImage(byte[] image) {
+            _cpu.LoadRamImage(image);
+            UpdateRamPage();
         }
 
         public MainWindowViewModel()

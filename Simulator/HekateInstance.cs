@@ -20,6 +20,7 @@ public class HekateInstance
 
     public Span<byte> GetRamPage(byte page) => new(_ram, page * 256, 256);
     public Span<byte> GetRomPage(byte page) => new(_rom, page * 256, 256);
+    public byte[] DumpRam() => _ram;
 
     public ExecutionResult Step()
     {
@@ -130,24 +131,6 @@ public class HekateInstance
         return _rom[(Registers.ProgramCounter + offset) & 0xffff];
     }
 
-    public void SaveRomImage(string path) //Save
-    {
-        File.WriteAllBytes(path, _rom);
-        Console.WriteLine($"ROM saved to: {path}");
-    }
-
-    public void LoadRomImage(string path) //Open
-    {
-        var bytes = File.ReadAllBytes(path);
-
-        if (bytes.Length != _rom.Length)
-            throw new InvalidOperationException($"ROM size mismatch. Expected {_rom.Length}, got {bytes.Length}");
-
-        Array.Copy(bytes, _rom, bytes.Length);
-        Registers.ProgramCounter = _startAddress;
-        Console.WriteLine($"ROM loaded from: {path}");
-    }
-
     public void ClearRom()
     {
         _rom = new byte[MemorySize];
@@ -175,5 +158,10 @@ public class HekateInstance
     public void LoadProgramAt(byte[] program, byte offset)
     {
         program.CopyTo(_rom, offset);
+    }
+
+    public void LoadRamImage(byte[] image)
+    {
+        Array.Copy(image, _ram, _ram.Length);
     }
 }
