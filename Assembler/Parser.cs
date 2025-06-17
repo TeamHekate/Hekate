@@ -2,7 +2,7 @@ using System.Globalization;
 
 namespace Assembler;
 
-public record ParseNode();
+public record ParseNode;
 
 public record OriginNode(ushort Address) : ParseNode;
 
@@ -13,6 +13,8 @@ public record InstructionNode(byte Opcode, params Argument[] Arguments) : ParseN
         return $"{Opcode:X2}\t {string.Join<Argument>(", ", Arguments)}";
     }
 }
+
+public record ByteDefNode(string[] Definitions) : ParseNode;
 
 public record Argument;
 
@@ -63,14 +65,15 @@ public static class Parser
     private static Queue<Token> _tokens = [];
     private static Queue<LabeledArg> _unresolvedLabeledArgs = [];
     private static Dictionary<string, ushort> _labels = [];
-    private static ushort _currentAddress = 0;
-    private static int _line = 0;
+    private static ushort _currentAddress;
+    private static int _line;
 
     private static Token Consume(params TokenType[] accepts)
     {
         var tok = _tokens.Dequeue();
         if (accepts.Length == 0 || accepts.Contains(tok.Type)) return tok;
-        throw new Exception($"[Line {_line}] Unexpected token of type " + tok.Type);
+        throw new Exception(
+            $"[Line {_line}] Unexpected token of type {tok.Type}, was expecting {(accepts.Length > 1 ? "one of" : "")} {string.Join(", ", accepts)}");
     }
 
     private static Token Peek()
@@ -138,6 +141,34 @@ public static class Parser
         var lTok = Consume(TokenType.LABEL);
         Consume(TokenType.COLON);
         _labels.Add(lTok.Value, _currentAddress);
+    }
+
+    private static ParseNode ParseMacro()
+    {
+        Consume(TokenType.DOT);
+        var macro = Consume(TokenType.ORG, TokenType.DB);
+        if (macro.Type == TokenType.ORG)
+        {
+            var org = ushort.Parse(
+                Consume(TokenType.HEX_IMM).Value.Replace("0X", ""),
+                NumberStyles.HexNumber);
+            var ret = new OriginNode(org);
+            _currentAddress = org;
+            return ret;
+        }
+        else
+        {
+            List<string> defs = [];
+            do
+            {
+                if (defs.Count > 0) Consume(TokenType.COMMA);
+                defs.Add(ParseImmediateArg().Value);
+                _currentAddress += 1;
+            } while (Peek().Type == TokenType.COMMA);
+
+            var ret = new ByteDefNode(defs.ToArray());
+            return ret;
+        }
     }
 
     private static InstructionNode ParseInstruction()
@@ -324,7 +355,7 @@ public static class Parser
                     "JV" => 0x48,
                     "JNV" => 0x49,
                     "JG" => 0x4A,
-                    "JLE" => 0x4B, 
+                    "JLE" => 0x4B,
                     "JL" => 0x4C,
                     "JGE" => 0x4D,
                     _ => 0x40
@@ -341,14 +372,8 @@ public static class Parser
     private static Queue<ParseNode> ParseLine()
     {
         Queue<ParseNode> q = [];
-        if (Peek().Type == TokenType.ORIGIN)
-        {
-            var org = ushort.Parse(
-                Consume().Value.Replace("@", ""),
-                NumberStyles.HexNumber);
-            q.Enqueue(new OriginNode(org));
-            _currentAddress = org;
-        }
+        if (Peek().Type == TokenType.DOT)
+            q.Enqueue(ParseMacro());
         else
         {
             if (Peek().Type == TokenType.LABEL)

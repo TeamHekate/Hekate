@@ -86,6 +86,12 @@ public static class Generator
         _index = node.Address;
     }
 
+    private static void ApplyByteDef(ByteDefNode node)
+    {
+        foreach (var def in node.Definitions)
+            _image[_index++] = ConvertImmediateToByte(def);
+    }
+
     private static byte MiniFloatToByte(string val)
     {
         var value = float.Parse(val);
@@ -238,6 +244,9 @@ public static class Generator
                     break;
                 case OriginNode originNode:
                     ApplyOrigin(originNode);
+                    break;
+                case ByteDefNode byteDefNode:
+                    ApplyByteDef(byteDefNode);
                     break;
             }
         }

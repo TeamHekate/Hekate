@@ -15,13 +15,15 @@ public static class Tokenizer
         { TokenType.BIN_IMM, @"^(-?0B[01]+)" },
         { TokenType.HEX_IMM, @"^(-?0X[\dA-F]+)" },
         { TokenType.DEC_IMM, @"^(-?(\d+))" },
-        { TokenType.ORIGIN, @"^@[A-F\d]{1,4}" },
+        { TokenType.DOT, @"^\." },
+        { TokenType.DB, @"^DB\b"},
+        { TokenType.ORG, @"^ORG\b"},
         { TokenType.COLON, @"^:" },
         { TokenType.LBRACKET, @"^\[" },
         { TokenType.RBRACKET, @"^\]" },
         { TokenType.PLUS, @"^\+" },
         { TokenType.COMMENT, @"^;.*" },
-        { TokenType.LABEL, @"^[_A-Z][_A-Z\d]*" },
+        { TokenType.LABEL, @"^[_A-Z][_A-Z\d]*\b" },
         { TokenType.NEWLINE, @"^\n" },
         { TokenType.COMMA, @"^," }
     };
@@ -61,7 +63,9 @@ public record Token(TokenType Type, string Value)
 public enum TokenType
 {
     LABEL,
-    ORIGIN,
+    DOT,
+    DB,
+    ORG,
     COLON,
     COMMA,
     OPCODE,

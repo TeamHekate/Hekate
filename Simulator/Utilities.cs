@@ -31,6 +31,7 @@ public abstract class Utilities
     public static byte FloatToByte(float value)
     {
         if (value == 0) return 0x00;
+        if (float.IsNaN(value)) return 0xff;
         if (float.IsPositiveInfinity(value)) return 0x70;
         if (float.IsNegativeInfinity(value)) return 0xf0;
 

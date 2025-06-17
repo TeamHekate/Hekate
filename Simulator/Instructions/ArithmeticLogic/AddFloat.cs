@@ -11,8 +11,15 @@ public abstract class AddFloat : IInstruction
         var dstF = Utilities.ByteToFloat(dstVal);
         var srcF = Utilities.ByteToFloat(srcVal);
         var accF = dstF + srcF;
-        var acc = Utilities.FloatToByte(accF);
 
+        var dstNaN = float.IsNaN(dstF);
+        var srcNaN = float.IsNaN(srcF);
+        var accNaN = float.IsNaN(accF);
+
+        if (dstNaN || srcNaN || accNaN) accF = float.NaN;
+        
+        var acc = Utilities.FloatToByte(accF);
+        
         var dstInf = float.IsInfinity(dstF);
         var srcInf = float.IsInfinity(srcF);
         var accInf = float.IsInfinity(accF);
