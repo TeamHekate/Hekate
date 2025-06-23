@@ -16,7 +16,7 @@ public abstract class LoadRom : IInstruction
         var val = cpu.ReadRomLocation(address);
         
         cpu.Registers[dstIx] = val;
-        cpu.Registers.ProgramCounter += 3;
+        cpu.Registers.ProgramCounter += 4;
         if (val == 0) cpu.Registers.ZeroFlag = true;
         if ((val & 0x80) != 0) cpu.Registers.SignFlag = true;
         

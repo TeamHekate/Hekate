@@ -365,11 +365,13 @@ namespace Frontend.ViewModels
                     Devices.Add(new PeripheralDeviceModel(portName));
             }
 
+            List<PeripheralDeviceModel> removeList = [];
             foreach (var device in Devices)
-            {
                 if (!ports.Contains(device.PortName))
-                    Devices.Remove(Devices.First(e => e.PortName == device.PortName));
-            }
+                    removeList.Add(Devices.First(e => e.PortName == device.PortName));
+
+            foreach (var rem in removeList)
+                Devices.Remove(rem);
 
             Console.WriteLine("Found {0} devices.", Devices.Count);
         }
