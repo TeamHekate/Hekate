@@ -315,7 +315,7 @@
                                Margin="15,0,5,0" FontSize="12" FontWeight="SemiBold" />
                     <Border Grid.Column="3" Background="{DynamicResource ThemePrimaryBrush}" Opacity="0.7" CornerRadius="3"
                             Padding="5" Height="30">
-                        <TextBlock Name="IrValue" Text="0000" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
+                        <TextBlock Name="IrValue" Text="{Binding InstructionRegister}" Foreground="{DynamicResource ThemeTextBrush}" HorizontalAlignment="Center"
                                    VerticalAlignment="Center" FontSize="12" />
                     </Border>
 

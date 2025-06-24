@@ -101,6 +101,7 @@ namespace Frontend.ViewModels
         [ObservableProperty] private string _romAddressString = "0000";
 
         public string ProgramCounter => _cpu.Registers.ProgramCounter.ToString("X4");
+        public string InstructionRegister => _cpu.Registers.InstructionRegister.ToString("X2");
         public string StackPointer => _cpu.Registers.StackPointer.ToString("X4");
 
         public string[] Flags =>
@@ -192,7 +193,7 @@ namespace Frontend.ViewModels
             UpdateRomPage();
             RefreshDevices();
             OnPropertyChanged(nameof(ProgramCounter));
-            
+            OnPropertyChanged(nameof(InstructionRegister));
             Console.WriteLine("MainWindowViewModel constructor completed");
         }
 
@@ -220,6 +221,7 @@ namespace Frontend.ViewModels
             if (LastExecutionResult.Flags) OnPropertyChanged(nameof(Flags));
             if (LastExecutionResult.Sp) OnPropertyChanged(nameof(StackPointer));
             OnPropertyChanged(nameof(ProgramCounter));
+            OnPropertyChanged(nameof(InstructionRegister));
             if (_cpu.Registers.HaltFlag) OnPropertyChanged(nameof(IsHalted));
         }
 
@@ -320,6 +322,7 @@ namespace Frontend.ViewModels
             _cpu.ClearRegisters();
             UpdateRegisters();
             OnPropertyChanged(nameof(ProgramCounter));
+            OnPropertyChanged(nameof(InstructionRegister));
             IsPaused = false;
             IsRunning = false;
         }
@@ -350,6 +353,7 @@ namespace Frontend.ViewModels
             UpdateRegisters();
             UpdateRamPage();
             OnPropertyChanged(nameof(ProgramCounter));
+            OnPropertyChanged(nameof(InstructionRegister));
             OnPropertyChanged(nameof(IsHalted));
             IsPaused = false;
             IsRunning = false;

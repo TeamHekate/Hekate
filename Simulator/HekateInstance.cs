@@ -26,6 +26,7 @@ public class HekateInstance
     {
         var pc = Registers.ProgramCounter;
         var ir = _rom[pc];
+        Registers.InstructionRegister = ir;
         Console.WriteLine(((Opcode)ir).ToString());
         return (Opcode)ir switch
         {
